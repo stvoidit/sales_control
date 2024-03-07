@@ -2,7 +2,7 @@
   "author": "",
   "dependencies": {
     "@fastify/static": "^7.0.1",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "esbuild": "^0.20.1",
     "fastify": "^4.26.2",
     "pino": "^8.19.0",
@@ -26,7 +26,8 @@
   "scripts": {
     "build": "node builder.js",
     "build:ts": "tsc",
-    "start": "tsc && NODE_ENV=development node dist/app.js"
+    "dev": "tsc && NODE_ENV=development node dist/app.js",
+    "serve": "pnpm build && node dist/app.mjs"
   },
   "type": "module",
   "version": "1.0.0"

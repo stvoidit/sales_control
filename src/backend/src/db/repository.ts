@@ -1,12 +1,12 @@
 import { User } from "./models.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import db from "./connect.js";
 
 async function getUsers() {
     return await db<User[]>`
     SELECT
         id
-        , login
+        , email
         , "name"
         , address
         , created
@@ -16,7 +16,7 @@ async function getUsers() {
 }
 
 async function insertUser(user: User) {
-    const passwordhash = await bcrypt.hash(user.password, 12);
+    const passwordhash = bcrypt.hashSync(user.password, 12);
     try {
         const result = await db<User[]>`
         INSERT INTO public.users

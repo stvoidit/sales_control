@@ -16,5 +16,22 @@ services:
     ports:
       - ${PGPORT}:${PGPORT}
 
+  sales_control_application:
+    container_name: sales_control_application
+    image: sales_control_application:latest
+    restart: always
+    build:
+      context: .
+      dockerfile: ${PWD}/Dockerfile
+    environment:
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGHOST: postgres
+      PGPORT: ${PGPORT}
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+
 volumes:
   pgdata:

@@ -2,7 +2,7 @@ include .env
 export
 
 run.dev.backend:
-	cd src/backend && pnpm run start
+	cd src/backend && pnpm run dev
 
 ddl.dump.schema:
 	pg_dump -v \
@@ -14,12 +14,14 @@ ddl.dump.schema:
 	--dbname=sales_control \
 	--host=${PGHOST} \
 	--port=${PGPORT} \
-	--username=postgres \
+	--username=${PGUSER} \
 	-f scripts/docker-entrypoint-initdb/0_create_database.sql
 
 
 docker.clean.db:
 	docker-compose down && docker volume rm fatify-server_pgdata
+docker.build:
+	docker build -f ${PWD}/Dockerfile -t sales_control_application:latest .
 
 
 curl.insert.user:
