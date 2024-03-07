@@ -1,0 +1,25 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16-alpine
+    restart: always
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+      timeout: 10s
+      retries: 120
+    environment:
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_DB: ${PGDATABASE}
+      PGPORT: ${PGPORT}
+      LANG: ru_RU.utf8
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+      - ${PWD}/scripts/docker-entrypoint-initdb:/docker-entrypoint-initdb.d
+    ports:
+      - ${PGPORT}:${PGPORT}
+
+volumes:
+  pgdata:
