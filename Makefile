@@ -12,11 +12,18 @@ ddl.dump.schema:
 	--no-password \
 	--schema-only \
 	--dbname=sales_control \
-	--host=localhost \
-	--port=5432 \
+	--host=${PGHOST} \
+	--port=${PGPORT} \
 	--username=postgres \
-	-f scripts/docker-entrypoint-initdb/0_init_db.sql
+	-f scripts/docker-entrypoint-initdb/0_create_database.sql
 
 
 docker.clean.db:
 	docker-compose down && docker volume rm fatify-server_pgdata
+
+
+curl.insert.user:
+	curl -X POST -o - \
+	-H "Content-Type: application/json" \
+	--data '{"email":"alex","password":"xyz123", "name":"Александр","address":"Москва"}' \
+	http://localhost:3000/api/users

@@ -2,6 +2,7 @@
   "author": "",
   "dependencies": {
     "@fastify/static": "^7.0.1",
+    "bcrypt": "^5.1.1",
     "esbuild": "^0.20.1",
     "fastify": "^4.26.2",
     "pino": "^8.19.0",

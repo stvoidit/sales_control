@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2 (Ubuntu 16.2-1.pgdg22.04+1)
 
--- Started on 2024-03-07 14:53:46 MSK
+-- Started on 2024-03-07 17:24:37 MSK
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ SET row_security = off;
 SET SESSION AUTHORIZATION 'postgres';
 
 --
--- TOC entry 3399 (class 1262 OID 16399)
+-- TOC entry 3401 (class 1262 OID 16384)
 -- Name: sales_control; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -48,13 +48,13 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 216 (class 1259 OID 16401)
+-- TOC entry 215 (class 1259 OID 16385)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    login text NOT NULL,
+    email text NOT NULL,
     password text NOT NULL,
     name text NOT NULL,
     address text NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE public.users (
 
 
 --
--- TOC entry 215 (class 1259 OID 16400)
+-- TOC entry 216 (class 1259 OID 16391)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -77,8 +77,8 @@ CREATE SEQUENCE public.users_id_seq
 
 
 --
--- TOC entry 3400 (class 0 OID 0)
--- Dependencies: 215
+-- TOC entry 3402 (class 0 OID 0)
+-- Dependencies: 216
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -86,7 +86,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- TOC entry 3246 (class 2604 OID 16404)
+-- TOC entry 3246 (class 2604 OID 16392)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -94,7 +94,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3250 (class 2606 OID 16409)
+-- TOC entry 3250 (class 2606 OID 16394)
 -- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -103,14 +103,23 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3248 (class 1259 OID 16410)
+-- TOC entry 3252 (class 2606 OID 16401)
+-- Name: users users_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_unique UNIQUE (email);
+
+
+--
+-- TOC entry 3248 (class 1259 OID 16395)
 -- Name: users_login_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX users_login_idx ON public.users USING btree (login, password);
+CREATE INDEX users_login_idx ON public.users USING btree (email, password);
 
 
--- Completed on 2024-03-07 14:53:46 MSK
+-- Completed on 2024-03-07 17:24:37 MSK
 
 --
 -- PostgreSQL database dump complete

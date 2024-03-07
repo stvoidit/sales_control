@@ -1,5 +1,6 @@
-import { getUsers } from "./repository.js";
+import { getUsers, insertUser } from "./repository.js";
 
 export {
-    getUsers
+    getUsers,
+    insertUser
 };

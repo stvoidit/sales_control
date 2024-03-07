@@ -3,11 +3,6 @@ services:
     container_name: postgres
     image: postgres:16-alpine
     restart: always
-    healthcheck:
-      test: /usr/bin/pg_isready
-      interval: 5s
-      timeout: 10s
-      retries: 120
     environment:
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_USER: ${PGUSER}

@@ -1,6 +1,6 @@
-interface Users {
+interface User {
     id: number;
-    login: string;
+    email: string;
     password?: string;
     name: string;
     address: string;
@@ -9,5 +9,5 @@ interface Users {
 
 
 export {
-    type Users
+    type User
 };
