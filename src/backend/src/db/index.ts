@@ -1,13 +1,13 @@
-import { getUsers, insertUser } from "./repository.js";
+import DB from "./repository.js";
+import { FastifyInstance } from "fastify";
+import fastifyPlugin from "fastify-plugin";
+import postgres from "postgres";
 
-import db from "./connect.js";
-
-async function closeDatabaseConnection() {
-    return await db.end();
-}
-
-export {
-    closeDatabaseConnection,
-    getUsers,
-    insertUser
-};
+export default fastifyPlugin(function (instance: FastifyInstance, opts, done) {
+    const conn = postgres({
+        database: "sales_control"
+    });
+    const db = new DB(conn);
+    instance.decorate("db", db);
+    done();
+});

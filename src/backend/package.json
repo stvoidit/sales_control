@@ -5,6 +5,7 @@
     "bcryptjs": "^2.4.3",
     "esbuild": "^0.20.1",
     "fastify": "^4.26.2",
+    "fastify-plugin": "^4.5.1",
     "pino": "^8.19.0",
     "pino-pretty": "^10.3.1",
     "postgres": "^3.4.3"

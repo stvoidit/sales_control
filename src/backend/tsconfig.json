@@ -10,6 +10,9 @@
     "noImplicitAny": false,
     "noUnusedLocals": false
   },
+  "typeRoots": [
+    "types"
+  ],
   "include": [
     "src/**/*.ts"
   ]

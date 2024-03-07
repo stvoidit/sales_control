@@ -1,17 +1,13 @@
-import {routes, statisRoute} from "./routes/index.js";
-
 import Fastify from "fastify";
-import {closeDatabaseConnection} from "./db/index.js";
+import db from "./db/index.js";
 import logger from "./logger.js";
+import router from "./routes/index.js";
 
-const app = Fastify({logger});
-app.register(routes);
-if (process.env.NODE_ENV !== "development") {
-    app.register(statisRoute, {
-        staticDir: "/www/data/static"
-    });
-}
-
+const app = Fastify({ logger });
+app.register(db);
+app.register(router, {
+    staticDir: "/www/data/static"
+});
 const start = async () => {
     try {
         await app.listen({host: "0.0.0.0", port: 3000 });
@@ -21,7 +17,7 @@ const start = async () => {
     }
 };
 const stop = async (signal) => {
-    await closeDatabaseConnection();
+    await app.db.end();
     await app.close();
 };
 start();
