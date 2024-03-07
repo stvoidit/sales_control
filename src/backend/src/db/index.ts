@@ -9,5 +9,6 @@ export default fastifyPlugin(function (instance: FastifyInstance, opts, done) {
     });
     const db = new DB(conn);
     instance.decorate("db", db);
+    instance.addHook("onClose", async () => await db.end());
     done();
 });

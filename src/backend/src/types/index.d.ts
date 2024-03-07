@@ -1,5 +1,5 @@
 import { FastifyLoggerInstance, RawReplyDefaultExpression, RawRequestDefaultExpression, RawServerBase, RawServerDefault } from "fastify";
-import DB from "./db/repository.ts";
+import DB from "../db/repository.js";
 
 declare module "fastify" {
   export interface FastifyInstance<
