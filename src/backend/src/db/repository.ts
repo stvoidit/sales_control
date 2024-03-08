@@ -45,6 +45,31 @@ class DB {
             throw new Error(err.detail);
         }
     }
+
+    async checkUserLogin(data: { login: string, password: string }) {
+        try {
+            const result = await this.sql<User[]>`
+            SELECT
+                u.id
+                , u."name"
+                , u."password"
+            FROM
+                users u
+            WHERE
+                u.email = ${data.login}`;
+            if (result.length !== 1) {
+                throw new Error("auth data invalide, check email or password");
+            }
+            const user = result[0];
+            if (!(await bcrypt.compare(data.password, user.password))) {
+                throw new Error("auth data invalide, check email or password");
+            }
+            user.password = undefined;
+            return user;
+        } catch (err: any) {
+            throw new Error(err.detail||err.message);
+        }
+    }
 }
 
 export default DB;

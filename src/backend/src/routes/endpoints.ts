@@ -15,17 +15,18 @@ const schema = {
 
 function routes(instance: FastifyInstance, opts: any, done) {
     instance.get("/api/users", async function (request, reply) {
+        this.log.debug(`ctxUser: ${JSON.stringify(request.ctxUser)}` );
         const users = await this.db.getUsers();
         reply.send(users);
     });
     instance.post<{ Body: User }>("/api/users", { schema }, async function(request, reply) {
         try {
+            this.log.debug(request.body);
             const user = await this.db.insertUser(request.body);
-            reply.statusCode = 201;
-            reply.send(user);
+            this.log.debug(user);
+            reply.code(201).send(user);
         } catch (err:any) {
-            reply.statusCode = 400;
-            reply.send({error:err.message});
+            reply.code(400).send({error:err.message});
         }
     });
     done();

@@ -3,6 +3,8 @@ export
 
 run.dev.backend:
 	cd src/backend && pnpm run dev
+run.dev.frontend:
+	cd src/frontend && pnpm run dev
 
 ddl.dump.schema:
 	pg_dump -v \
@@ -27,5 +29,5 @@ docker.build:
 curl.insert.user:
 	curl -X POST -o - \
 	-H "Content-Type: application/json" \
-	--data '{"email":"alex","password":"xyz123", "name":"Александр","address":"Москва"}' \
+	--data '{"email":"admin@admin","password":"123", "name":"admin","address":"root"}' \
 	http://localhost:3000/api/users

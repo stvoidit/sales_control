@@ -1,6 +1,8 @@
 {
   "author": "",
   "dependencies": {
+    "@fastify/cookie": "^9.3.1",
+    "@fastify/multipart": "^8.1.0",
     "@fastify/static": "^7.0.1",
     "bcryptjs": "^2.4.3",
     "esbuild": "^0.20.1",
