@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Admin from "@/pages/Admin/index.vue";
 import HomePage from "@/pages/HomePage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 
@@ -9,7 +8,10 @@ const router = createRouter({
     routes: [
         {
             path: "/",
-            component: HomePage
+            component: HomePage,
+            meta: {
+                label: "Главная страница"
+            }
         },
         {
             path: "/login",
@@ -17,7 +19,32 @@ const router = createRouter({
         },
         {
             path: "/admin",
-            component: Admin
+            meta: {
+                label: "Админка"
+            },
+            children: [
+                {
+                    path: "/admin/users",
+                    component: () => import("@/pages/Admin/pages/UsersPage.vue"),
+                    meta: {
+                        label: "Пользователи"
+                    }
+                },
+                {
+                    path: "salers",
+                    component: () => import("@/pages/Admin/pages/SalersPage.vue"),
+                    meta: {
+                        label: "Продавцы"
+                    }
+                },
+                {
+                    path: "retailoutlets",
+                    component: () => import("@/pages/Admin/pages/RetailOutletsPage.vue"),
+                    meta: {
+                        label: "Торговые точки"
+                    }
+                }
+            ]
         }
     ]
 });
