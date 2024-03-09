@@ -33,9 +33,9 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 const activeIndex = ref("0");
+const router = useRouter();
 const menuRoutes = computed(() => {
     const arr = [];
-    const router = useRouter();
     for (const i in router.options.routes) {
         if (!router.options.routes[i].meta?.label) continue;
         const route = {...router.options.routes[i]};
@@ -43,15 +43,14 @@ const menuRoutes = computed(() => {
         for (const j in route.children) {
             if (!router.options.routes[i].meta?.label) continue;
             const subroute = route.children[j];
+            subroute.path = [
+                route.path,
+                subroute.path
+            ].join("/");
             subroute.index = `${i}-${j}`;
         }
         arr.push(route);
     }
     return arr;
 });
-
 </script>
-
-<style lang="scss" scoped>
-
-</style>

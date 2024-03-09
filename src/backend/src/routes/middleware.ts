@@ -10,10 +10,10 @@ export default fastifyPlugin(function (instance: FastifyInstance, opts: any, don
         secret: "randomString",
         hook: "onRequest",
         parseOptions: {
-            domain: process.env.DOMAIN || "localhost",
+            domain: process.env.DOMAIN,
             httpOnly: true,
             path: "/",
-            sameSite: process.env.DOMAIN ? true : false,
+            sameSite: true,
             secure: process.env.DOMAIN ? true : false,
             signed: true
         }

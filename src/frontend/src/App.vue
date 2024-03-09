@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <el-header>
+        <el-header v-if="isNotLoginPage">
             <HeaderBase />
         </el-header>
         <el-main>
@@ -12,9 +12,8 @@
 </template>
 <script setup>
 import HeaderBase from "@/pages/components/HeaderBase.vue";
+const isNotLoginPage = window.location.pathname !== "/login";
+fetch("/api/init").then(response => {
+    if (response.status === 401 && isNotLoginPage) window.location.href = "/login";
+});
 </script>
-<style>
-.row-max-width {
-    width: 100vw
-}
-</style>

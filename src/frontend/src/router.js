@@ -24,7 +24,7 @@ const router = createRouter({
             },
             children: [
                 {
-                    path: "/admin/users",
+                    path: "users",
                     component: () => import("@/pages/Admin/pages/UsersPage.vue"),
                     meta: {
                         label: "Пользователи"

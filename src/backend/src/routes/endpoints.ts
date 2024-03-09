@@ -16,6 +16,10 @@ const schema = {
 };
 
 function routes(instance: FastifyInstance, opts: any, done) {
+    instance.get("/api/init", async function (request, reply) {
+        this.log.debug({msg: "ctxUser", obj: {...request.ctxUser}} );
+        reply.send(request.ctxUser);
+    });
     instance.get("/api/users", async function (request, reply) {
         this.log.debug({msg: "ctxUser", obj: {...request.ctxUser}} );
         reply.send(await this.db.getUsers());

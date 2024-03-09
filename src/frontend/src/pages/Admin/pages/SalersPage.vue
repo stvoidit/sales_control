@@ -66,7 +66,14 @@
 import { onMounted, ref, reactive } from "vue";
 const dialogFormVisible = ref(false);
 const salers = ref([]);
-const fetchData = async () => await fetch("/api/salers").then(response => response.json().then(data => salers.value = data));
+const fetchData = async () => {
+    const response = await await fetch("/api/salers");
+    if (response.status === 401) {
+        window.location.href = "/login";
+        return;
+    }
+    salers.value = await response.json();
+};
 onMounted(fetchData);
 const columns = [
     {
@@ -106,6 +113,9 @@ const onConfirm = async () => {
     };
     try {
         const response = await fetch("/api/salers", options);
+        if (response.status === 401) {
+            window.location.href = "/login";
+        }
         if (response.status === 201) {
             return await fetchData().then(() => dialogFormVisible.value = false);
         } else if (response.status < 500) {
