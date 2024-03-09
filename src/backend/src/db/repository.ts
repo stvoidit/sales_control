@@ -1,5 +1,6 @@
+import { Saler, User } from "./models.js";
+
 import { Sql } from "postgres";
-import { User } from "./models.js";
 import bcrypt from "bcryptjs";
 
 class DB {
@@ -72,13 +73,32 @@ class DB {
     }
 
     async getSalers() {
-        return await this.sql`
+        return await this.sql<Saler[]>`
         SELECT
             id
             , "label"
             , description
             , created
         FROM public.salers`;
+    }
+
+    async insertSaler(data: Saler) {
+        try {
+            return await this.sql`
+            INSERT
+                INTO
+                public.salers
+                (
+                    "label"
+                    , description
+                )
+            VALUES(
+                ${data.label}
+                , ${data.description}
+            )`;
+        } catch (err: any) {
+            throw new Error(err.detail||err.message);
+        }
     }
 }
 

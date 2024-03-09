@@ -7,7 +7,15 @@ interface User {
     created: Date
 }
 
+interface Saler {
+    id?: number;
+    label: string;
+    description: string;
+    created?: Date
+}
+
 
 export {
-    type User
+    type User,
+    type Saler
 };
