@@ -5,7 +5,6 @@
     "@fastify/multipart": "^8.1.0",
     "@fastify/static": "^7.0.1",
     "bcryptjs": "^2.4.3",
-    "esbuild": "^0.20.1",
     "fastify": "^4.26.2",
     "fastify-plugin": "^4.5.1",
     "pino": "^8.19.0",
@@ -17,9 +16,10 @@
     "@types/node": "^20.11.25",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
+    "esbuild": "^0.20.1",
     "eslint": "^8.57.0",
     "fastify-tsconfig": "^2.0.0",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.7.1",
     "typescript": "^5.4.2"
   },
   "keywords": [],
@@ -28,8 +28,8 @@
   "name": "fatify-server",
   "scripts": {
     "build": "node builder.js",
-    "build:ts": "tsc",
-    "dev": "tsc && NODE_ENV=development node dist/app.js",
+    "dev": "tsx src/app.ts",
+    "lint": "eslint --ext .ts,.js --fix src/",
     "serve": "pnpm build && node dist/app.mjs"
   },
   "type": "module",

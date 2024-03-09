@@ -2,18 +2,20 @@
   "extends": "fastify-tsconfig",
   "compilerOptions": {
     "outDir": "dist",
-    "sourceMap": true,
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
-    "target": "ESNext",
-    "esModuleInterop": true,
     "noImplicitAny": false,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "rootDir": "src/",
+    "declaration": true,
   },
   "typeRoots": [
-    "types"
+    "@types/node",
+    "src/types"
   ],
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
