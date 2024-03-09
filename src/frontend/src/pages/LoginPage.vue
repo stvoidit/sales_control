@@ -12,11 +12,11 @@
                     enctype="multipart/form-data"
                     label-width="auto">
                     <el-form-item
-                        label="email"
+                        label="login"
                         required>
                         <el-input
                             v-model="loginForm.login"
-                            name="email"
+                            name="login"
                             form="login-form" />
                     </el-form-item>
                     <el-form-item
@@ -55,6 +55,10 @@ const onSubmit = async () => {
         headers: { "content-type": "application/json" },
         body: JSON.stringify(loginForm)
     };
-    return await fetch("/api/login", options);
+    return await fetch("/api/login", options).then(response => {
+        if (response.status === 200) {
+            window.location.href = "/";
+        }
+    });
 };
 </script>

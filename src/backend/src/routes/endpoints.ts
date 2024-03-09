@@ -5,7 +5,7 @@ const schema = {
     body: {
         type: "object",
         required: [
-            "email",
+            "login",
             "name",
             "password",
             "address"

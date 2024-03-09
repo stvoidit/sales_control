@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2 (Ubuntu 16.2-1.pgdg22.04+1)
 
--- Started on 2024-03-07 17:24:37 MSK
+-- Started on 2024-03-09 14:08:40 MSK
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -54,11 +54,12 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    email text NOT NULL,
+    login text NOT NULL,
     password text NOT NULL,
     name text NOT NULL,
     address text NOT NULL,
-    created timestamp with time zone DEFAULT now() NOT NULL
+    created timestamp with time zone DEFAULT now() NOT NULL,
+    is_active boolean DEFAULT true NOT NULL
 );
 
 
@@ -108,18 +109,10 @@ ALTER TABLE ONLY public.users
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_unique UNIQUE (email);
+    ADD CONSTRAINT users_unique UNIQUE (login);
 
 
---
--- TOC entry 3248 (class 1259 OID 16395)
--- Name: users_login_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX users_login_idx ON public.users USING btree (email, password);
-
-
--- Completed on 2024-03-07 17:24:37 MSK
+-- Completed on 2024-03-09 14:08:40 MSK
 
 --
 -- PostgreSQL database dump complete

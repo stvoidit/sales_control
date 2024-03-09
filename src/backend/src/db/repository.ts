@@ -14,7 +14,7 @@ class DB {
         return await this.sql<User[]>`
         SELECT
             id
-            , email
+            , login
             , "name"
             , address
             , created
@@ -28,13 +28,13 @@ class DB {
             const result = await this.sql<User[]>`
             INSERT INTO public.users
             (
-                email
+                login
                 , "password"
                 , "name"
                 , address
             )
             VALUES(
-                ${user.email}
+                ${user.login}
                 , ${passwordhash}
                 , ${user.name}
                 , ${user.address}
@@ -56,13 +56,13 @@ class DB {
             FROM
                 users u
             WHERE
-                u.email = ${data.login}`;
+                u.login = ${data.login}`;
             if (result.length !== 1) {
-                throw new Error("auth data invalide, check email or password");
+                throw new Error("auth data invalide, check login or password");
             }
             const user = result[0];
             if (!(await bcrypt.compare(data.password, user.password))) {
-                throw new Error("auth data invalide, check email or password");
+                throw new Error("auth data invalide, check login or password");
             }
             user.password = undefined;
             return user;
