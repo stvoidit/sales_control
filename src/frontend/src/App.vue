@@ -13,4 +13,8 @@
 <script setup>
 import HeaderBase from "@/pages/components/HeaderBase.vue";
 </script>
-x
+<style>
+.row-max-width {
+    width: 100vw
+}
+</style>

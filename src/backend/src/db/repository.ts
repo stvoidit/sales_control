@@ -70,6 +70,16 @@ class DB {
             throw new Error(err.detail||err.message);
         }
     }
+
+    async getSalers() {
+        return await this.sql`
+        SELECT
+            id
+            , "label"
+            , description
+            , created
+        FROM public.salers`;
+    }
 }
 
 export default DB;

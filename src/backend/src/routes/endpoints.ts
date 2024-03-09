@@ -16,8 +16,7 @@ const schema = {
 function routes(instance: FastifyInstance, opts: any, done) {
     instance.get("/api/users", async function (request, reply) {
         this.log.debug({msg: "ctxUser", obj: {...request.ctxUser}} );
-        const users = await this.db.getUsers();
-        reply.send(users);
+        reply.send(await this.db.getUsers());
     });
     instance.post<{ Body: User }>("/api/users", { schema }, async function(request, reply) {
         try {
@@ -28,6 +27,9 @@ function routes(instance: FastifyInstance, opts: any, done) {
         } catch (err:any) {
             reply.code(400).send({error:err.message});
         }
+    });
+    instance.get("/api/salers", async function (request, reply) {
+        reply.send(await this.db.getSalers());
     });
     done();
 }

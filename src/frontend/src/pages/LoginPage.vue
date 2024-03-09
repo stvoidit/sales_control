@@ -7,9 +7,6 @@
                 <el-form
                     id="login-form"
                     v-model="loginForm"
-                    action="/api/login"
-                    method="post"
-                    enctype="multipart/form-data"
                     label-width="auto">
                     <el-form-item
                         label="login"
