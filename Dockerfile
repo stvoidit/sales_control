@@ -13,6 +13,7 @@ WORKDIR /app
 RUN npm install --no-audit --progress=false -g pnpm
 COPY src/frontend/package.json src/frontend/pnpm-lock.yaml src/frontend/vite.config.js src/frontend/index.html ./
 RUN pnpm install
+COPY src/frontend/public public
 COPY src/frontend/src src
 RUN NODE_ENV=production pnpm build
 
