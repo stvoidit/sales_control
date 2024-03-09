@@ -15,7 +15,7 @@ const schema = {
 
 function routes(instance: FastifyInstance, opts: any, done) {
     instance.get("/api/users", async function (request, reply) {
-        this.log.debug(`ctxUser: ${JSON.stringify(request.ctxUser)}` );
+        this.log.debug({msg: "ctxUser", obj: {...request.ctxUser}} );
         const users = await this.db.getUsers();
         reply.send(users);
     });

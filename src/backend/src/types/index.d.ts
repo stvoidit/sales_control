@@ -10,5 +10,5 @@ declare module "fastify" {
   > {
     db: DB;
   }
-  export interface FastifyRequest<>{ctxUser: any}
+  export interface FastifyRequest{ctxUser?: {id:number,name:string}}
 }
