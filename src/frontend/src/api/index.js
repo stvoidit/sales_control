@@ -40,7 +40,7 @@ class API {
         const options = {
             method: "DELETE"
         };
-        return await fetch(`/api/salers/${id}`, options);
+        return await fetch(`/api/salers/${id}`, options).then(intercaptor);
     }
     async createAppointments(payload) {
         const options = {
@@ -62,7 +62,24 @@ class API {
         const options = {
             method: "DELETE"
         };
-        return await fetch(`/api/retail_outlets/${id}`, options);
+        return await fetch(`/api/retail_outlets/${id}`, options).then(intercaptor);
+    }
+
+    async getReportOption() {
+        return await fetch("/api/report/options").then(intercaptor);
+    }
+
+    async sendReport(payload) {
+        const options = {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(payload)
+        };
+        return await (fetch("/api/report", options));
+    }
+
+    async getReportsLog() {
+        return await fetch("/api/report/logs").then(intercaptor);
     }
 }
 

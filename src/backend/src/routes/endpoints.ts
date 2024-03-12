@@ -1,4 +1,4 @@
-import { Appointment, RetailOutlet, Saler, User } from "../db/models.js";
+import { Appointment, Report, RetailOutlet, Saler, User } from "../db/models.js";
 
 import { FastifyInstance } from "fastify";
 import fastifyPlugin from "fastify-plugin";
@@ -96,6 +96,27 @@ function routes(instance: FastifyInstance, opts: any, done) {
             reply.code(400).send({error:err.message});
         }
     });
+
+    instance.get("/api/report/options", async function (request, reply) {
+        reply.send(await this.db.getReportOption(request.ctxUser.id));
+    });
+    instance.get("/api/report/logs", async function (request, reply) {
+        reply.send(await this.db.getReportsLog());
+    });
+
+    instance.post<{ Body: Report }>("/api/report", async function (request, reply) {
+        const report = request.body;
+        report.user_id = request.ctxUser.id;
+        try {
+            this.log.debug(report);
+            await this.db.insertReport(report);
+            reply.code(201);
+        } catch (err: any) {
+            this.log.error(err);
+            reply.code(400).send({error:err.message});
+        }
+    });
+
     done();
 }
 

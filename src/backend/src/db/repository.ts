@@ -1,4 +1,4 @@
-import { Appointment, RetailOutlet, Saler, User } from "./models.js";
+import { Appointment, Report, RetailOutlet, Saler, User } from "./models.js";
 
 import { Sql } from "postgres";
 import bcrypt from "bcryptjs";
@@ -193,6 +193,83 @@ class DB {
         }
     }
 
+    async getReportOption(userID: number) {
+        return await this.sql<Saler[]>`
+        SELECT
+            s.id
+            , s."label"
+            , array_agg(
+                jsonb_build_object(
+                    'id'
+                    , ro.id
+                    , 'label'
+                    , ro.label
+                )
+            ) AS retail_outlets
+        FROM
+            appointments a
+        INNER JOIN salers s ON
+            s.id = a.saler_id
+        INNER JOIN retail_outlets ro ON
+            ro.id = a.retail_outlet_id
+        WHERE
+            a.login_id = ${userID}
+        GROUP BY
+            s.id`;
+    }
+
+    async insertReport(data: Report) {
+        try {
+            return await this.sql`
+            INSERT
+                INTO
+                public.reports
+            (
+                    user_id
+                    , saler_id
+                    , retail_outlet_id
+                    , report_date
+                    , val
+                    , bl
+                    , nal
+                )
+            VALUES(
+                ${data.user_id}
+                , ${data.saler_id}
+                , ${data.retail_outlet_id}
+                , ${data.report_date}
+                , ${data.report.val}
+                , ${data.report.bl}
+                , ${data.report.nal}
+            )`;
+        } catch (err: any) {
+            throw new Error(err.detail||err.message);
+        }
+    }
+
+    async getReportsLog() {
+        return await this.sql`
+        SELECT
+            r.report_date
+            , r.created
+            , r.val::float8
+            , r.bl::float8
+            , r.nal::float8
+            , u.login
+            , s."label" AS saler
+            , ro."label" AS retail_outlet
+        FROM
+            reports r
+        INNER JOIN users u ON
+            u.id = r.user_id
+        INNER JOIN salers s ON
+            s.id = r.saler_id
+        INNER JOIN retail_outlets ro ON
+            ro.id = r.retail_outlet_id
+        ORDER BY
+            r.report_date ASC
+            , r.retail_outlet_id ASC`;
+    }
 }
 
 export default DB;
