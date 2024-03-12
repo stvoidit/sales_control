@@ -1,4 +1,4 @@
-import { RetailOutlet, Saler, User } from "./models.js";
+import { Appointment, RetailOutlet, Saler, User } from "./models.js";
 
 import { Sql } from "postgres";
 import bcrypt from "bcryptjs";
@@ -135,6 +135,62 @@ class DB {
         return await this.sql`
         DELETE FROM public.retail_outlets
         WHERE id = ${id}`;
+    }
+
+    async getAppointments() {
+        return await this.sql<Appointment[]>`
+        SELECT
+            a.id
+            , a.created
+            , jsonb_build_object(
+                'id'
+                , u.id
+                , 'login'
+                , u.login
+            ) AS "user"
+            , jsonb_build_object(
+                'id'
+                , s.id
+                , 'label'
+                , s."label"
+            ) AS "saler"
+            , jsonb_build_object(
+                'id'
+                , ro.id
+                , 'label'
+                , ro."label"
+                , 'address'
+                , ro.address
+            ) AS "retail_outlet"
+        FROM
+            appointments a
+        LEFT JOIN users u ON
+            u.id = a.login_id
+        LEFT JOIN salers s ON
+            s.id = a.saler_id
+        LEFT JOIN retail_outlets ro ON
+            ro.id = a.retail_outlet_id
+        `;
+    }
+    async insertAppointments(data: Appointment) {
+        try {
+            return await this.sql`
+            INSERT
+                INTO
+                public.appointments
+                (
+                    login_id
+                    , saler_id
+                    , retail_outlet_id
+                )
+            VALUES(
+                ${data.user.id}
+                , ${data.saler.id}
+                , ${data.retail_outlet.id}
+            )`;
+        } catch (err: any) {
+            throw new Error(err.detail||err.message);
+        }
     }
 
 }

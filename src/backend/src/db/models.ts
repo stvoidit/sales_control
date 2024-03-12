@@ -21,9 +21,17 @@ interface RetailOutlet {
     created: Date;
 }
 
+interface Appointment {
+    id?: number;
+    user: User;
+    saler: Saler;
+    retail_outlet: RetailOutlet;
+    created?: Date
+}
 
 export {
     type User,
     type Saler,
-    type RetailOutlet
+    type RetailOutlet,
+    type Appointment
 };
