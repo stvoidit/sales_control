@@ -14,8 +14,16 @@ interface Saler {
     created?: Date
 }
 
+interface RetailOutlet {
+    id: number;
+    label: string;
+    address: string;
+    created: Date;
+}
+
 
 export {
     type User,
-    type Saler
+    type Saler,
+    type RetailOutlet
 };

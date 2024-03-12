@@ -1,4 +1,4 @@
-import { Saler, User } from "../db/models.js";
+import { RetailOutlet, Saler, User } from "../db/models.js";
 
 import { FastifyInstance } from "fastify";
 import fastifyPlugin from "fastify-plugin";
@@ -38,7 +38,7 @@ function routes(instance: FastifyInstance, opts: any, done) {
     instance.get("/api/salers", async function (request, reply) {
         reply.send(await this.db.getSalers());
     });
-    instance.post<{ Body: Saler }>("/api/salers", async function(request, reply) {
+    instance.post<{ Body: RetailOutlet }>("/api/salers", async function(request, reply) {
         try {
             this.log.debug(request.body);
             await this.db.insertSaler(request.body);
@@ -52,6 +52,30 @@ function routes(instance: FastifyInstance, opts: any, done) {
         try {
             this.log.debug(request.params.id);
             await this.db.deleteSaler(request.params.id);
+            reply.code(200);
+        } catch (err: any) {
+            this.log.error(err);
+            reply.code(400).send({error:err.message});
+        }
+    });
+
+    instance.get("/api/retail_outlets", async function (request, reply) {
+        reply.send(await this.db.getRetailOutlets());
+    });
+    instance.post<{ Body: Saler }>("/api/retail_outlets", async function(request, reply) {
+        try {
+            this.log.debug(request.body);
+            await this.db.insertRetailOutlets(request.body);
+            reply.code(201);
+        } catch (err: any) {
+            this.log.error(err);
+            reply.code(400).send({error:err.message});
+        }
+    });
+    instance.delete("/api/retail_outlets/:id", async function(request, reply) {
+        try {
+            this.log.debug(request.params.id);
+            await this.db.deleteRetailOutlets(request.params.id);
             reply.code(200);
         } catch (err: any) {
             this.log.error(err);

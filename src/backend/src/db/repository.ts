@@ -1,4 +1,4 @@
-import { Saler, User } from "./models.js";
+import { RetailOutlet, Saler, User } from "./models.js";
 
 import { Sql } from "postgres";
 import bcrypt from "bcryptjs";
@@ -106,6 +106,37 @@ class DB {
         DELETE FROM public.salers
         WHERE id = ${id}`;
     }
+
+
+    async getRetailOutlets() {
+        return await this.sql<RetailOutlet[]>`
+        SELECT id, "label", address, created
+        FROM public.retail_outlets`;
+    }
+    async insertRetailOutlets(data: RetailOutlet) {
+        try {
+            return await this.sql`
+            INSERT
+                INTO
+                public.retail_outlets
+                (
+                    "label"
+                    , address
+                )
+            VALUES(
+                ${data.label}
+                , ${data.address}
+            )`;
+        } catch (err: any) {
+            throw new Error(err.detail||err.message);
+        }
+    }
+    async deleteRetailOutlets(id: number) {
+        return await this.sql`
+        DELETE FROM public.retail_outlets
+        WHERE id = ${id}`;
+    }
+
 }
 
 export default DB;
