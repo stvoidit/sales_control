@@ -25,33 +25,35 @@ const router = createRouter({
             children: [
                 {
                     path: "users",
-                    component: () => import("@/pages/Admin/pages/UsersPage.vue"),
+                    component: () => import("@/pages/Admin/pages/Users.page.vue"),
                     meta: {
                         label: "Пользователи"
                     }
                 },
                 {
                     path: "salers",
-                    component: () => import("@/pages/Admin/pages/SalersPage.vue"),
+                    component: () => import("@/pages/Admin/pages/Salers.page.vue"),
                     meta: {
                         label: "Продавцы"
                     }
                 },
                 {
                     path: "retailoutlets",
-                    component: () => import("@/pages/Admin/pages/RetailOutletsPage.vue"),
+                    component: () => import("@/pages/Admin/pages/RetailOutlets.page.vue"),
                     meta: {
                         label: "Торговые точки"
+                    }
+                },
+                {
+                    path: "appointments",
+                    component: () => import("@/pages/Admin/pages/Appointments.page.vue"),
+                    meta: {
+                        label: "Назначения"
                     }
                 }
             ]
         }
     ]
-});
-
-
-router.beforeEach((to, from, next) => {
-    next();
 });
 
 
