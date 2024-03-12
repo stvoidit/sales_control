@@ -29,5 +29,5 @@ docker.build:
 curl.insert.user:
 	curl -X POST -o - \
 	-H "Content-Type: application/json" \
-	--data '{"email":"admin@admin","password":"123", "name":"admin","address":"root"}' \
-	http://localhost:3000/api/users
+	--data '{"login":"admin","password":"123", "name":"admin","address":"root"}' \
+	http://localhost:8080/api/users

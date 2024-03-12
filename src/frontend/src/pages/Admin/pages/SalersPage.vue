@@ -56,6 +56,24 @@
                         v-for="column in columns"
                         :key="column.id"
                         v-bind="column" />
+                    <el-table-column
+                        fixed="right"
+                        label="Operations"
+                        width="180">
+                        <template #default="{row}">
+                            <el-button
+                                type="primary"
+                                size="small">
+                                Edit
+                            </el-button>
+                            <el-button
+                                type="danger"
+                                size="small"
+                                @click="handleDelete(row.id)">
+                                Delete
+                            </el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </el-col>
         </el-space>
@@ -117,6 +135,25 @@ const onConfirm = async () => {
             window.location.href = "/login";
         }
         if (response.status === 201) {
+            return await fetchData().then(() => dialogFormVisible.value = false);
+        } else if (response.status < 500) {
+            throw new Error(await response.text());
+        } else alert(response.statusText);
+    } catch (err) {
+        alert(err);
+    }
+};
+
+const handleDelete = async (id) => {
+    const options = {
+        method: "DELETE"
+    };
+    try {
+        const response = await fetch(`/api/salers/${id}`, options);
+        if (response.status === 401) {
+            window.location.href = "/login";
+        }
+        if (response.status === 200) {
             return await fetchData().then(() => dialogFormVisible.value = false);
         } else if (response.status < 500) {
             throw new Error(await response.text());

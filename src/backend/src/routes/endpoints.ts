@@ -48,6 +48,16 @@ function routes(instance: FastifyInstance, opts: any, done) {
             reply.code(400).send({error:err.message});
         }
     });
+    instance.delete("/api/salers/:id", async function(request, reply) {
+        try {
+            this.log.debug(request.params.id);
+            await this.db.deleteSaler(request.params.id);
+            reply.code(200);
+        } catch (err: any) {
+            this.log.error(err);
+            reply.code(400).send({error:err.message});
+        }
+    });
     done();
 }
 

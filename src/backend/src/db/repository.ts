@@ -100,6 +100,12 @@ class DB {
             throw new Error(err.detail||err.message);
         }
     }
+
+    async deleteSaler(id: number) {
+        return await this.sql`
+        DELETE FROM public.salers
+        WHERE id = ${id}`;
+    }
 }
 
 export default DB;
