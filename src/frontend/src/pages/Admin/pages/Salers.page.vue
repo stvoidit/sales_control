@@ -82,16 +82,10 @@
 
 <script setup>
 import { onMounted, ref, reactive } from "vue";
+import api from "@/api";
 const dialogFormVisible = ref(false);
 const salers = ref([]);
-const fetchData = async () => {
-    const response = await await fetch("/api/salers");
-    if (response.status === 401) {
-        window.location.href = "/login";
-        return;
-    }
-    salers.value = await response.json();
-};
+const fetchData = async () => api.getSalers().then(data => salers.value = data);
 onMounted(fetchData);
 const columns = [
     {
@@ -124,40 +118,17 @@ const closeHandle = () => {
 };
 
 const onConfirm = async () => {
-    const options = {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(form)
-    };
     try {
-        const response = await fetch("/api/salers", options);
-        if (response.status === 401) {
-            window.location.href = "/login";
-        }
-        if (response.status === 201) {
-            return await fetchData().then(() => dialogFormVisible.value = false);
-        } else if (response.status < 500) {
-            throw new Error(await response.text());
-        } else alert(response.statusText);
+        await api.createSaler(form);
+        return await fetchData().then(() => dialogFormVisible.value = false);
     } catch (err) {
         alert(err);
     }
 };
 
 const handleDelete = async (id) => {
-    const options = {
-        method: "DELETE"
-    };
     try {
-        const response = await fetch(`/api/salers/${id}`, options);
-        if (response.status === 401) {
-            window.location.href = "/login";
-        }
-        if (response.status === 200) {
-            return await fetchData().then(() => dialogFormVisible.value = false);
-        } else if (response.status < 500) {
-            throw new Error(await response.text());
-        } else alert(response.statusText);
+        await api.deleteSaler(id).then(fetchData);
     } catch (err) {
         alert(err);
     }

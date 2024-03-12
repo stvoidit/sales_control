@@ -5,7 +5,6 @@
         :show-close="false"
         width="800"
         @close="closeHandle">
-        <pre>{{ form }}</pre>
         <el-form
             :model="form"
             label-width="auto">
@@ -95,6 +94,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import api from "@/api";
 const dialogFormVisible = ref(false);
 const form = reactive({
     id: null,
@@ -115,29 +115,17 @@ const retailOutlets = ref([]);
 const appointments = ref([]);
 
 const fetchData = async () => await Promise.all([
-    fetch("/api/users").then(response => response.json().then(data => users.value = data)),
-    fetch("/api/salers").then(response => response.json().then(data => salers.value = data)),
-    fetch("/api/retail_outlets").then(response => response.json().then(data => retailOutlets.value = data)),
-    fetch("/api/appointments").then(response => response.json().then(data => appointments.value = data))
+    api.getUsers().then(data => users.value = data),
+    api.getSalers().then(data => salers.value = data),
+    api.getRetailOutlets().then(data => retailOutlets.value = data),
+    api.getAppointments().then(data => appointments.value = data)
 ]);
 onMounted(fetchData);
 
 const onConfirm = async () => {
-    const options = {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(form)
-    };
     try {
-        const response = await fetch("/api/appointments", options);
-        if (response.status === 401) {
-            window.location.href = "/login";
-        }
-        if (response.status === 201) {
-            return await fetchData().then(() => dialogFormVisible.value = false);
-        } else if (response.status < 500) {
-            throw new Error(await response.text());
-        } else alert(response.statusText);
+        await api.createAppointments(form).then();
+        return await fetchData().then(() => dialogFormVisible.value = false);
     } catch (err) {
         alert(err);
     }
