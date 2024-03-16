@@ -30,11 +30,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 const activeIndex = ref("0");
 const router = useRouter();
-const menuRoutes = computed(() => {
+const menuRoutes = (() => {
     const arr = [];
     for (const i in router.options.routes) {
         if (!router.options.routes[i].meta?.label) continue;
@@ -52,5 +52,5 @@ const menuRoutes = computed(() => {
         arr.push(route);
     }
     return arr;
-});
+})();
 </script>

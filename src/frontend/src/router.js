@@ -24,7 +24,7 @@ const router = createRouter({
             },
             children: [
                 {
-                    path: "users",
+                    path: "daily_report",
                     component: () => import("@/pages/Reports/DailyReport.page.vue"),
                     meta: {
                         label: "Ежедневные отчеты"
