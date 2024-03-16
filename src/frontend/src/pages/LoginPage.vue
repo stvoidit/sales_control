@@ -7,7 +7,8 @@
                 <el-form
                     id="login-form"
                     v-model="loginForm"
-                    label-width="auto">
+                    label-width="auto"
+                    @keypress.enter="onSubmit">
                     <el-form-item
                         label="login"
                         required>
