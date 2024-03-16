@@ -1,11 +1,15 @@
 <template>
     <el-card>
         <el-form
+            ref="formElement"
             :model="form"
+            status-icon
+            :rules="validateRules"
             label-position="top"
             label-width="auto">
             <el-form-item
                 label="Дата отчета"
+                prop="report_date"
                 required>
                 <el-date-picker
                     v-model="form.report_date"
@@ -17,6 +21,7 @@
                 <el-col :span="12">
                     <el-form-item
                         label="Продавец"
+                        prop="saler_id"
                         required>
                         <el-select
                             v-model="form.saler_id"
@@ -32,6 +37,7 @@
                 <el-col :span="12">
                     <el-form-item
                         label="Торговая точка"
+                        prop="retail_outlet_id"
                         required>
                         <el-select
                             v-model="form.retail_outlet_id">
@@ -72,6 +78,7 @@
                 <el-col :span="8">
                     <el-form-item
                         label="Нал"
+                        prop="report.nal"
                         required>
                         <el-input-number
                             v-model="form.report.nal"
@@ -99,7 +106,7 @@
 </template>
 
 <script setup>
-import { reactive, computed } from "vue";
+import { reactive, computed, ref } from "vue";
 import api from "@/api";
 import dayjs from "dayjs";
 import { ElNotification } from "element-plus";
@@ -119,6 +126,27 @@ const form = reactive({
         nal: 0
     }
 });
+const formElement = ref();
+const validateNal = (rule, value, callback) => {
+    if ((form.report.val + form.report.bl) != value) {
+        callback(new Error("nal != val+bl"));
+    } else {
+        callback();
+    }
+};
+const validateNotNull = (rule, value, callback) => {
+    if (!form[rule.field]) {
+        callback(new Error(`${rule.field} is null`));
+    } else {
+        callback();
+    }
+};
+const validateRules = reactive({
+    "report.nal": [{ trigger: "blur", validator: validateNal }],
+    "saler_id": [{ trigger: "blur", validator: validateNotNull }],
+    "retail_outlet_id": [{ trigger: "blur", validator: validateNotNull }],
+    "report_date": [{ trigger: "blur", validator: validateNotNull }]
+});
 const availibleOutlets = computed(() => {
     const selectedSaler = props.reportOptions.find(opt => opt.id === form.saler_id);
     if (selectedSaler) {
@@ -133,20 +161,24 @@ const handleResetForm = () => {
     form.report.val = 0;
     form.report.bl = 0;
     form.report.nal = 0;
+    formElement.value.resetFields();
 };
 const handleSendReport = async () => {
-    try {
-        await api.sendReport(form).then(handleResetForm);
-        ElNotification({
-            title: "Отправка отчета",
-            message: "Отчет отправлен",
-            type: "success",
-            showClose: false,
-            duration: 2500
-        });
-        emit("submit");
-    } catch (error) {
-        alert(error);
+    if (!formElement.value) return;
+    if (await formElement.value.validate(valid => valid)) {
+        try {
+            await api.sendReport(form).then(handleResetForm);
+            ElNotification({
+                title: "Отправка отчета",
+                message: "Отчет отправлен",
+                type: "success",
+                showClose: false,
+                duration: 2500
+            });
+            emit("submit");
+        } catch (error) {
+            alert(error);
+        }
     }
 };
 const resetRetailOutletID = () => form.retail_outlet_id = null;

@@ -241,7 +241,19 @@ class DB {
                 , ${data.report.val}
                 , ${data.report.bl}
                 , ${data.report.nal}
-            )`;
+            )
+            ON CONFLICT (
+                saler_id
+                , retail_outlet_id
+                , report_date
+            )
+            DO UPDATE
+                SET
+                    user_id = EXCLUDED.user_id
+                    , created = now()
+                    , val = EXCLUDED.val
+                    , bl = EXCLUDED.bl
+                    , nal = EXCLUDED.nal`;
         } catch (err: any) {
             throw new Error(err.detail||err.message);
         }
