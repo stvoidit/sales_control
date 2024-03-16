@@ -7,18 +7,20 @@
             :rules="validateRules"
             label-position="top"
             label-width="auto">
-            <el-form-item
-                label="Дата отчета"
-                prop="report_date"
-                required>
-                <el-date-picker
-                    v-model="form.report_date"
-                    :disabled-date="disabledDate"
-                    format="DD.MM.YYYY"
-                    type="date" />
-            </el-form-item>
             <el-row :gutter="20">
-                <el-col :span="12">
+                <el-col :span="4">
+                    <el-form-item
+                        label="Дата отчета"
+                        prop="report_date"
+                        required>
+                        <el-date-picker
+                            v-model="form.report_date"
+                            :disabled-date="disabledDate"
+                            format="DD.MM.YYYY"
+                            type="date" />
+                    </el-form-item>
+                </el-col>
+                <el-col :span="10">
                     <el-form-item
                         label="Продавец"
                         prop="saler_id"
@@ -34,7 +36,7 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="10">
                     <el-form-item
                         label="Торговая точка"
                         prop="retail_outlet_id"
