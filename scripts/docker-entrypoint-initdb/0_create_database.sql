@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2 (Ubuntu 16.2-1.pgdg22.04+1)
 
--- Started on 2024-03-12 18:06:04 MSK
+-- Started on 2024-03-16 22:14:57 MSK
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ SET row_security = off;
 SET SESSION AUTHORIZATION 'postgres';
 
 --
--- TOC entry 3447 (class 1262 OID 16384)
+-- TOC entry 3449 (class 1262 OID 16384)
 -- Name: sales_control; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -76,7 +76,7 @@ CREATE SEQUENCE public.appointments_id_seq
 
 
 --
--- TOC entry 3448 (class 0 OID 0)
+-- TOC entry 3450 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: appointments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -117,7 +117,7 @@ CREATE SEQUENCE public.reports_id_seq
 
 
 --
--- TOC entry 3449 (class 0 OID 0)
+-- TOC entry 3451 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -139,7 +139,7 @@ CREATE TABLE public.retail_outlets (
 
 
 --
--- TOC entry 3450 (class 0 OID 0)
+-- TOC entry 3452 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: COLUMN retail_outlets.label; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -148,7 +148,7 @@ COMMENT ON COLUMN public.retail_outlets.label IS 'название';
 
 
 --
--- TOC entry 3451 (class 0 OID 0)
+-- TOC entry 3453 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: COLUMN retail_outlets.address; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -171,7 +171,7 @@ CREATE SEQUENCE public.retail_outlets_id_seq
 
 
 --
--- TOC entry 3452 (class 0 OID 0)
+-- TOC entry 3454 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: retail_outlets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -193,7 +193,7 @@ CREATE TABLE public.salers (
 
 
 --
--- TOC entry 3453 (class 0 OID 0)
+-- TOC entry 3455 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: COLUMN salers.label; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -202,7 +202,7 @@ COMMENT ON COLUMN public.salers.label IS 'Название продавца';
 
 
 --
--- TOC entry 3454 (class 0 OID 0)
+-- TOC entry 3456 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: COLUMN salers.description; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -225,7 +225,7 @@ CREATE SEQUENCE public.salers_id_seq
 
 
 --
--- TOC entry 3455 (class 0 OID 0)
+-- TOC entry 3457 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: salers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -250,7 +250,7 @@ CREATE TABLE public.users (
 
 
 --
--- TOC entry 3456 (class 0 OID 0)
+-- TOC entry 3458 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: COLUMN users.login; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -259,7 +259,7 @@ COMMENT ON COLUMN public.users.login IS 'Логин';
 
 
 --
--- TOC entry 3457 (class 0 OID 0)
+-- TOC entry 3459 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: COLUMN users.password; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -268,7 +268,7 @@ COMMENT ON COLUMN public.users.password IS 'Пароль в bcrypt';
 
 
 --
--- TOC entry 3458 (class 0 OID 0)
+-- TOC entry 3460 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: COLUMN users.name; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -277,7 +277,7 @@ COMMENT ON COLUMN public.users.name IS 'Имя';
 
 
 --
--- TOC entry 3459 (class 0 OID 0)
+-- TOC entry 3461 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: COLUMN users.address; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -286,7 +286,7 @@ COMMENT ON COLUMN public.users.address IS 'Адрес';
 
 
 --
--- TOC entry 3460 (class 0 OID 0)
+-- TOC entry 3462 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: COLUMN users.created; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -295,7 +295,7 @@ COMMENT ON COLUMN public.users.created IS 'Дата создания';
 
 
 --
--- TOC entry 3461 (class 0 OID 0)
+-- TOC entry 3463 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: COLUMN users.is_active; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -318,7 +318,7 @@ CREATE SEQUENCE public.users_id_seq
 
 
 --
--- TOC entry 3462 (class 0 OID 0)
+-- TOC entry 3464 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -394,6 +394,15 @@ ALTER TABLE ONLY public.reports
 
 
 --
+-- TOC entry 3297 (class 2606 OID 16515)
+-- Name: reports reports_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT reports_unique UNIQUE (saler_id, retail_outlet_id, report_date);
+
+
+--
 -- TOC entry 3289 (class 2606 OID 16439)
 -- Name: retail_outlets retail_outlets_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
@@ -439,7 +448,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3296 (class 2606 OID 16440)
+-- TOC entry 3298 (class 2606 OID 16440)
 -- Name: appointments appointments_retail_outlets_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -448,7 +457,7 @@ ALTER TABLE ONLY public.appointments
 
 
 --
--- TOC entry 3297 (class 2606 OID 16455)
+-- TOC entry 3299 (class 2606 OID 16455)
 -- Name: appointments appointments_salers_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -457,7 +466,7 @@ ALTER TABLE ONLY public.appointments
 
 
 --
--- TOC entry 3298 (class 2606 OID 16428)
+-- TOC entry 3300 (class 2606 OID 16428)
 -- Name: appointments appointments_users_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -465,7 +474,7 @@ ALTER TABLE ONLY public.appointments
     ADD CONSTRAINT appointments_users_fk FOREIGN KEY (login_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2024-03-12 18:06:04 MSK
+-- Completed on 2024-03-16 22:14:57 MSK
 
 --
 -- PostgreSQL database dump complete
