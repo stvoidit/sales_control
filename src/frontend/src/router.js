@@ -1,7 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import Appointments from "@/pages/Admin/Appointments.page.vue";
+import DailyReport from "@/pages/Reports/DailyReport.page.vue";
 import HomePage from "@/pages/HomePage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
+import RetailOutlets from "@/pages/Admin/RetailOutlets.page.vue";
+import Salers from "@/pages/Admin/Salers.page.vue";
+import Users from "@/pages/Admin/Users.page.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -25,7 +30,7 @@ const router = createRouter({
             children: [
                 {
                     path: "daily_report",
-                    component: () => import("@/pages/Reports/DailyReport.page.vue"),
+                    component: DailyReport,
                     meta: {
                         label: "Ежедневные отчеты"
                     }
@@ -40,28 +45,28 @@ const router = createRouter({
             children: [
                 {
                     path: "users",
-                    component: () => import("@/pages/Admin/Users.page.vue"),
+                    component: Users,
                     meta: {
                         label: "Пользователи"
                     }
                 },
                 {
                     path: "salers",
-                    component: () => import("@/pages/Admin/Salers.page.vue"),
+                    component: Salers,
                     meta: {
                         label: "Продавцы"
                     }
                 },
                 {
                     path: "retailoutlets",
-                    component: () => import("@/pages/Admin/RetailOutlets.page.vue"),
+                    component: RetailOutlets,
                     meta: {
                         label: "Торговые точки"
                     }
                 },
                 {
                     path: "appointments",
-                    component: () => import("@/pages/Admin/Appointments.page.vue"),
+                    component: Appointments,
                     meta: {
                         label: "Назначения"
                     }
