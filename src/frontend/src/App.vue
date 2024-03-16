@@ -11,7 +11,7 @@
     </el-container>
 </template>
 <script setup>
-import HeaderBase from "@/pages/components/HeaderBase.vue";
+import HeaderBase from "@/components/HeaderBase.vue";
 import { ref } from "vue";
 const inited = ref(false);
 const isNotLoginPage = window.location.pathname !== "/login";
