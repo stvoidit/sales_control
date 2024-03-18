@@ -1,15 +1,13 @@
 <template>
-    <el-table
-        :data="data"
-        border
-        flexible
-        size="small"
-        style="width: 100%">
-        <el-table-column
-            v-for="column in columns"
-            :key="column.id"
-            v-bind="column" />
-    </el-table>
+    <div class="q-pa-md">
+        <q-table
+            :rows="data"
+            :grid="false"
+            hide-pagination
+            bordered
+            :columns="columns"
+            row-key="id" />
+    </div>
 </template>
 
 <script setup>
@@ -20,40 +18,40 @@ defineProps({
 const columns = [
     {
         label: "Дата отчета",
-        prop: "report_date",
-        formatter: (row) => dayjs(row.report_date).format("DD.MM.YYYY")
+        field: "report_date",
+        format: (value) => dayjs(value).format("DD.MM.YYYY")
     },
     {
         label: "Дата отправки отчета",
-        prop: "created",
-        formatter: (row) => new Date(row.created).toLocaleString()
+        field: "created",
+        format: (value) => new Date(value).toLocaleString()
     },
     {
         label: "Пользователь",
-        prop: "login"
+        field: "login"
     },
     {
         label: "Продавец",
-        prop: "saler"
+        field: "saler"
     },
     {
         label: "Торговая точка",
-        prop: "retail_outlet"
+        field: "retail_outlet"
     },
     {
         label: "Вал",
-        prop: "val",
-        formatter: (row) => row.val.toLocaleString()
+        field: "val",
+        format: (value) => value.toLocaleString()
     },
     {
         label: "Бл",
-        prop: "bl",
-        formatter: (row) => row.bl.toLocaleString()
+        field: "bl",
+        format: (value) => value.toLocaleString()
     },
     {
         label: "Нал",
-        prop: "nal",
-        formatter: (row) => row.nal.toLocaleString()
+        field: "nal",
+        format: (value) => value.toLocaleString()
     }
 ];
 

@@ -1,16 +1,14 @@
 <template>
-    <el-row justify="center">
-        <el-col :span="12">
-            <ReportForm
-                :report-options="reportOptions"
-                @submit="fetchReportOption" />
-        </el-col>
-    </el-row>
-    <el-row style="margin-top: 2em;">
-        <el-col>
+    <div class="row justify-center">
+        <ReportForm
+            :report-options="reportOptions"
+            @submit="fetchReportOption" />
+    </div>
+    <div class="row q-mt-md">
+        <div class="col">
             <TableReports :data="reportsLog" />
-        </el-col>
-    </el-row>
+        </div>
+    </div>
 </template>
 
 <script setup>

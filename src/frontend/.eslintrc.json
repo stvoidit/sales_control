@@ -4,7 +4,9 @@
         "node": true,
         "browser": true
     },
-    "plugins": [],
+    "plugins": [
+        "vue"
+    ],
     "globals": {
         "NodeJS": true
     },

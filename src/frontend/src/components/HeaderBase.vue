@@ -1,38 +1,47 @@
 <template>
-    <el-menu
-        :default-active="activeIndex"
-        router
-        mode="horizontal">
-        <template
-            v-for="route in menuRoutes"
-            :key="route.path">
-            <el-menu-item
-                v-if="!route.children"
-                :index="route.path">
-                {{ route.meta.label }}
-            </el-menu-item>
-            <el-sub-menu
-                v-else
-                :index="route.index">
-                <template #title>
-                    {{ route.meta.label }}
-                </template>
-                <el-menu-item
-                    v-for="subroute in route.children"
-                    :key="subroute.path"
-                    :index="subroute.index"
-                    :route="subroute">
-                    {{ subroute.meta.label }}
-                </el-menu-item>
-            </el-sub-menu>
-        </template>
-    </el-menu>
+    <q-header
+        bordered
+        class="bg-white text-black"
+        height-hint="98">
+        <q-tabs
+            v-model="tab"
+            align="left"
+            inline-label>
+            <template
+                v-for="r in menuRoutes"
+                :key="r.path">
+                <q-route-tab
+                    v-if="r.meta && !r.children"
+                    :to="r.path"
+                    exact
+                    :label="r.meta.label" />
+                <q-btn-dropdown
+                    v-if="r.meta && r.children"
+                    :key="r.path"
+                    auto-close
+                    stretch
+                    flat
+                    :label="r.meta.label">
+                    <q-list>
+                        <q-item
+                            v-for="sr in r.children"
+                            :key="sr.path"
+                            :to="sr.path"
+                            exact
+                            clickable>
+                            <q-item-section>{{ sr.meta.label }}</q-item-section>
+                        </q-item>
+                    </q-list>
+                </q-btn-dropdown>
+            </template>
+        </q-tabs>
+    </q-header>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-const activeIndex = ref("0");
+const tab = ref("/");
 const router = useRouter();
 const menuRoutes = (() => {
     const arr = [];

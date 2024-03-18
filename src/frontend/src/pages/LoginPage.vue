@@ -1,49 +1,43 @@
 <template>
-    <el-row
-        justify="center"
-        align="middle">
-        <el-col :span="6">
-            <el-card style="max-width: 480px">
-                <el-form
-                    id="login-form"
-                    v-model="loginForm"
-                    label-width="auto"
-                    @keypress.enter="onSubmit">
-                    <el-form-item
-                        label="login"
-                        required>
-                        <el-input
-                            v-model="loginForm.login"
-                            name="login"
-                            form="login-form" />
-                    </el-form-item>
-                    <el-form-item
-                        label="password"
-                        required>
-                        <el-input
-                            v-model="loginForm.password"
-                            form="login-form"
-                            name="password"
+    <div
+        class="column"
+        style="height: 500px">
+        <div class="col self-center">
+            <q-card style="max-width: 480px">
+                <q-card-section>
+                    <q-form
+                        class="q-gutter-md"
+                        @submit="onSubmit"
+                        @keypress.enter="onSubmit">
+                        <q-input
+                            v-model="form.login"
+                            outlined
+                            dense
+                            autocomplete="on"
+                            label="Логин" />
+                        <q-input
+                            v-model="form.password"
+                            outlined
+                            dense
                             type="password"
-                            autocomplete="off" />
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button
-                            form="login-form"
-                            type="primary"
-                            @click="onSubmit">
-                            login
-                        </el-button>
-                    </el-form-item>
-                </el-form>
-            </el-card>
-        </el-col>
-    </el-row>
+                            autocomplete="off"
+                            label="Пароль" />
+                        <div class="row justify-end q-gutter-md">
+                            <q-btn
+                                label="login"
+                                type="submit"
+                                color="primary" />
+                        </div>
+                    </q-form>
+                </q-card-section>
+            </q-card>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import { reactive } from "vue";
-const loginForm = reactive({
+const form = reactive({
     login: "",
     password: ""
 });
@@ -51,7 +45,7 @@ const onSubmit = async () => {
     const options = {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(loginForm)
+        body: JSON.stringify(form)
     };
     return await fetch("/api/login", options).then(response => {
         if (response.status === 200) {

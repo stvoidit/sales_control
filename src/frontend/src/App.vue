@@ -1,14 +1,14 @@
 <template>
-    <el-container>
-        <el-header v-if="isNotLoginPage">
-            <HeaderBase />
-        </el-header>
-        <el-main v-if="inited">
-            <router-view v-slot="{ Component }">
-                <component :is="Component" />
-            </router-view>
-        </el-main>
-    </el-container>
+    <q-layout view="hHh lpR fFf">
+        <HeaderBase v-if="isNotLoginPage" />
+        <q-page-container>
+            <q-page v-if="inited">
+                <router-view v-slot="{ Component }">
+                    <component :is="Component" />
+                </router-view>
+            </q-page>
+        </q-page-container>
+    </q-layout>
 </template>
 <script setup>
 import HeaderBase from "@/components/HeaderBase.vue";

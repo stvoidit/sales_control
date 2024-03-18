@@ -1,95 +1,63 @@
 <template>
-    <el-dialog
+    <q-dialog
         v-model="dialogFormVisible"
-        destroy-on-close
-        :show-close="false"
-        width="800"
-        @close="closeHandle">
-        <el-form
-            :model="form"
-            label-width="auto">
-            <el-form-item
-                label="Пользователь"
-                required>
-                <el-select
-                    v-model="form.user">
-                    <el-option
-                        v-for="item in users"
-                        :key="item.login"
-                        :label="item.login"
-                        :value="item" />
-                </el-select>
-            </el-form-item>
-            <el-form-item
-                label="Продавец"
-                required>
-                <el-select
-                    v-model="form.saler">
-                    <el-option
-                        v-for="item in salers"
-                        :key="item.label"
-                        :label="item.label"
-                        :value="item" />
-                </el-select>
-            </el-form-item>
-            <el-form-item
-                label="Торговая точка"
-                required>
-                <el-select
-                    v-model="form.retail_outlet">
-                    <el-option
-                        v-for="item in retailOutlets"
-                        :key="item.label"
-                        :label="item.label"
-                        :value="item" />
-                </el-select>
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">
-                    Закрыть
-                </el-button>
-                <el-button
-                    type="primary"
-                    @click="onConfirm">
-                    Подтвердить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
-    <el-row>
-        <el-col :span="24">
-            <el-button
-                plain
-                @click="dialogFormVisible = true">
-                Добавить связь
-            </el-button>
-        </el-col>
-        <el-col :span="24" />
-    </el-row>
-    <el-space wrap>
-        <el-card
-            v-for="ap in appointments"
-            :key="ap.id"
-            style="min-width: 320px">
-            <el-row>
-                <el-col>
-                    <div><b>Пользователь: </b>{{ ap.user.login }}</div>
-                    <div><b>Продавец: </b>{{ ap.saler.label }}</div>
-                    <div><b>Торговая точка: </b>{{ ap.retail_outlet.label }}</div>
-                    <div><b>Адрес: </b>{{ ap.retail_outlet.address }}</div>
-                </el-col>
-            </el-row>
-            <el-row justify="end">
-                <el-button
-                    size="small"
-                    type="danger">
-                    delete
-                </el-button>
-            </el-row>
-        </el-card>
-    </el-space>
+        :auto-close="false"
+        @before-hide="closeHandle">
+        <q-card>
+            <q-card-section>
+                <q-form
+                    class="q-gutter-md"
+                    @submit="onConfirm">
+                    <q-select
+                        v-model="form.user"
+                        outlined
+                        dense
+                        :options="users"
+                        label="Пользователь"
+                        option-label="login"
+                        emit-value />
+                    <q-select
+                        v-model="form.saler"
+                        outlined
+                        dense
+                        :options="salers"
+                        label="Продавец" />
+                    <q-select
+                        v-model="form.retail_outlet"
+                        outlined
+                        dense
+                        :options="retailOutlets"
+                        label="Торговая точка" />
+                    <div class="row justify-end q-gutter-md">
+                        <q-btn
+                            label="Закрыть"
+                            class="q-ml-sm"
+                            @click="dialogFormVisible = false" />
+                        <q-btn
+                            label="Добавить"
+                            type="submit"
+                            color="primary"
+                            @click="onConfirm" />
+                    </div>
+                </q-form>
+            </q-card-section>
+        </q-card>
+    </q-dialog>
+    <div class="row q-col-gutter-md q-pa-md">
+        <div class="col">
+            <q-btn
+                label="Добавить связь"
+                @click="dialogFormVisible = true" />
+            <q-table
+                class="q-mt-md"
+                :rows="appointments"
+                :grid="true"
+                hide-pagination
+                bordered
+                :columns="columns"
+                row-key="id" />
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -114,11 +82,17 @@ const salers = ref([]);
 const retailOutlets = ref([]);
 const appointments = ref([]);
 
+const appointmentsMap = (v) => ({
+    "user.login": v.user.login,
+    "saler.label": v.saler.label,
+    "retail_outlet.label": v.retail_outlet.label,
+    "retail_outlet.address": v.retail_outlet.address
+});
 const fetchData = async () => await Promise.all([
     api.getUsers().then(data => users.value = data),
     api.getSalers().then(data => salers.value = data),
     api.getRetailOutlets().then(data => retailOutlets.value = data),
-    api.getAppointments().then(data => appointments.value = data)
+    api.getAppointments().then(data => appointments.value = data.map(appointmentsMap))
 ]);
 onMounted(fetchData);
 
@@ -130,5 +104,26 @@ const onConfirm = async () => {
         alert(err);
     }
 };
+
+const columns = [
+    {
+        field: "user.login",
+        label: "Пользователь"
+    },
+    {
+        field: "saler.label",
+        label: "Продавец"
+    },
+    {
+        field: "retail_outlet.label",
+        label: "Торговая точка"
+    },
+    {
+        field: "retail_outlet.address",
+        label: "Адрес"
+    }
+];
+
+// TODO: вернуть функционал в таблице, добавить столбец с кнопками
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <el-dialog
+    <!-- <el-dialog
         v-model="dialogFormVisible"
         destroy-on-close
         :show-close="false"
@@ -77,7 +77,56 @@
                 </el-table>
             </el-col>
         </el-space>
-    </el-row>
+    </el-row> -->
+    <q-dialog
+        v-model="dialogFormVisible"
+        :auto-close="false"
+        @before-hide="closeHandle">
+        <q-card>
+            <q-card-section>
+                <q-form
+                    class="q-gutter-md"
+                    @submit="onConfirm">
+                    <q-input
+                        v-model="form.label"
+                        outlined
+                        autocomplete="off"
+                        label="Название" />
+                    <q-input
+                        v-model="form.address"
+                        outlined
+                        autocomplete="off"
+                        label="Адрес" />
+                    <div class="row justify-end q-gutter-md">
+                        <q-btn
+                            label="Закрыть"
+                            class="q-ml-sm"
+                            @click="dialogFormVisible = false" />
+                        <q-btn
+                            label="Добавить"
+                            type="submit"
+                            color="primary"
+                            @click="onConfirm" />
+                    </div>
+                </q-form>
+            </q-card-section>
+        </q-card>
+    </q-dialog>
+    <div class="row q-col-gutter-md q-pa-md">
+        <div class="col">
+            <q-btn
+                label="Добавить новую торговую точку"
+                @click="dialogFormVisible = true" />
+            <q-table
+                class="q-mt-md"
+                :rows="retailOutlets"
+                :grid="false"
+                hide-pagination
+                bordered
+                :columns="columns"
+                row-key="id" />
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -89,23 +138,23 @@ const fetchData = async () => api.getRetailOutlets().then(data => retailOutlets.
 onMounted(fetchData);
 const columns = [
     {
-        prop: "id",
+        field: "id",
         label: "ID",
         width: 120
     },
     {
-        prop: "label",
+        field: "label",
         label: "Название"
     },
     {
-        prop: "address",
+        field: "address",
         label: "Адрес"
     },
     {
-        prop: "created",
+        field: "created",
         label: "Дата создания",
         width: 300,
-        formatter: (row) => new Date(row.created).toLocaleString()
+        format: (value) => new Date(value).toLocaleString()
     }
 ];
 const form = reactive({
@@ -126,6 +175,7 @@ const onConfirm = async () => {
     }
 };
 
+// TODO: вернуть функционал в таблице, добавить столбец с кнопками
 const handleDelete = async (id) => {
     try {
         await api.deleteRetailOutlet(id).then(fetchData);

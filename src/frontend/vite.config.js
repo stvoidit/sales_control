@@ -1,8 +1,6 @@
 import { defineConfig, loadEnv } from "vite";
+import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 
-import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 
@@ -11,13 +9,10 @@ export default ({ mode }) => {
     const env = loadEnv(mode, ".");
     return defineConfig({
         plugins: [
-            vue(),
-            AutoImport({
-                resolvers: [ElementPlusResolver()]
+            vue({
+                template: { transformAssetUrls }
             }),
-            Components({
-                resolvers: [ElementPlusResolver()]
-            })
+            quasar()
         ],
         server: {
             proxy: {
