@@ -1,83 +1,4 @@
 <template>
-    <!-- <el-dialog
-        v-model="dialogFormVisible"
-        destroy-on-close
-        :show-close="false"
-        width="800"
-        @close="closeHandle">
-        <el-form
-            :model="form"
-            label-width="auto">
-            <el-form-item
-                label="Название"
-                required>
-                <el-input
-                    v-model="form.label"
-                    autocomplete="off" />
-            </el-form-item>
-            <el-form-item label="Адрес">
-                <el-input
-                    v-model="form.address"
-                    type="textarea" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">
-                    Закрыть
-                </el-button>
-                <el-button
-                    type="primary"
-                    @click="onConfirm">
-                    Подтвердить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
-    <el-row :gutter="20">
-        <el-space
-            wrap
-            fill>
-            <el-col :span="24">
-                <el-button
-                    plain
-                    @click="dialogFormVisible = true">
-                    Добавить новую точку
-                </el-button>
-            </el-col>
-            <el-col :span="24">
-                <el-table
-                    :data="retailOutlets"
-                    border
-                    flexible
-                    size="small"
-                    style="width: 100%">
-                    <el-table-column
-                        v-for="column in columns"
-                        :key="column.id"
-                        v-bind="column" />
-                    <el-table-column
-                        fixed="right"
-                        label="Operations"
-                        width="180">
-                        <template #default="{row}">
-                            <el-button
-                                type="primary"
-                                size="small">
-                                Edit
-                            </el-button>
-                            <el-button
-                                type="danger"
-                                size="small"
-                                @click="handleDelete(row.id)">
-                                Delete
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </el-col>
-        </el-space>
-    </el-row> -->
     <q-dialog
         v-model="dialogFormVisible"
         :auto-close="false"
@@ -105,8 +26,7 @@
                         <q-btn
                             label="Добавить"
                             type="submit"
-                            color="primary"
-                            @click="onConfirm" />
+                            color="primary" />
                     </div>
                 </q-form>
             </q-card-section>
@@ -124,7 +44,35 @@
                 hide-pagination
                 bordered
                 :columns="columns"
-                row-key="id" />
+                row-key="id">
+                <template #header="props">
+                    <q-tr :props="props">
+                        <q-th
+                            v-for="col in props.cols"
+                            :key="col.name"
+                            :props="props">
+                            {{ col.label }}
+                        </q-th>
+                    </q-tr>
+                </template>
+                <template #body="props">
+                    <q-tr :props="props">
+                        <q-td
+                            v-for="col in props.cols"
+                            :key="col.name">
+                            <template v-if="col.name !== 'btns'">
+                                {{ col.value }}
+                            </template>
+                            <q-btn
+                                v-else
+                                dense
+                                color="negative"
+                                label="удалить"
+                                @click="handleDelete(props.row.id)" />
+                        </q-td>
+                    </q-tr>
+                </template>
+            </q-table>
         </div>
     </div>
 </template>
@@ -139,22 +87,34 @@ onMounted(fetchData);
 const columns = [
     {
         field: "id",
-        label: "ID",
-        width: 120
+        name: "id",
+        align: "left",
+        label: "ID"
     },
     {
         field: "label",
+        name: "label",
+        align: "left",
         label: "Название"
     },
     {
         field: "address",
+        name: "address",
+        align: "left",
         label: "Адрес"
     },
     {
         field: "created",
         label: "Дата создания",
-        width: 300,
+        name: "icreatedd",
+        align: "left",
         format: (value) => new Date(value).toLocaleString()
+    },
+    {
+        name: "btns",
+        label: "Действия",
+        align: "left",
+        field: row => row.name
     }
 ];
 const form = reactive({
