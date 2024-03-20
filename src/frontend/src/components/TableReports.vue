@@ -4,14 +4,14 @@
             :rows="data"
             :grid="false"
             hide-pagination
-            bordered
+            dense
             :columns="columns"
             row-key="id" />
     </div>
 </template>
 
 <script setup>
-import dayjs from "dayjs";
+import { toLocalDateString } from "@/utils";
 defineProps({
     data: { type: Array, required: true}
 });
@@ -19,38 +19,46 @@ const columns = [
     {
         label: "Дата отчета",
         field: "report_date",
-        format: (value) => dayjs(value).format("DD.MM.YYYY")
+        align: "left",
+        format: (value) => toLocalDateString(value)
     },
     {
         label: "Дата отправки отчета",
         field: "created",
+        align: "left",
         format: (value) => new Date(value).toLocaleString()
     },
     {
         label: "Пользователь",
-        field: "login"
+        field: "login",
+        align: "left"
     },
     {
         label: "Продавец",
-        field: "saler"
+        field: "saler",
+        align: "left"
     },
     {
         label: "Торговая точка",
-        field: "retail_outlet"
+        field: "retail_outlet",
+        align: "left"
     },
     {
         label: "Вал",
         field: "val",
+        align: "left",
         format: (value) => value.toLocaleString()
     },
     {
         label: "Бл",
         field: "bl",
+        align: "left",
         format: (value) => value.toLocaleString()
     },
     {
         label: "Нал",
         field: "nal",
+        align: "left",
         format: (value) => value.toLocaleString()
     }
 ];

@@ -1,13 +1,13 @@
 <template>
-    <q-card class="my-card q-gutter-md">
-        <q-card-section>
+    <q-card class="my-card">
+        <q-card-section class="q-gutter-md">
+            <!-- <pre>{{ form }}</pre> -->
             <q-form
                 class="q-gutter-md"
                 @submit="handleSendReport"
                 @reset="handleResetForm">
-                <!-- <pre>{{ form }}</pre> -->
                 <div class="row q-col-gutter-md q-mb-md">
-                    <div class="col-2">
+                    <div class="col-3">
                         <q-input
                             v-model="form.report_date"
                             outlined
@@ -24,8 +24,8 @@
                                         <q-date
                                             v-model="form.report_date"
                                             v-close-popup
+                                            dense
                                             title="Дата отчета"
-                                            :locale="locale"
                                             mask="DD.MM.YYYY"
                                             minimal />
                                     </q-popup-proxy>
@@ -33,7 +33,7 @@
                             </template>
                         </q-input>
                     </div>
-                    <div class="col-5">
+                    <div class="col">
                         <q-select
                             v-model="form.saler_id"
                             label="Продавец"
@@ -46,7 +46,7 @@
                             map-options
                             @update:model-value="resetRetailOutletID" />
                     </div>
-                    <div class="col-5">
+                    <div class="col">
                         <q-select
                             v-model="form.retail_outlet_id"
                             label="Торговая точка"
@@ -67,7 +67,7 @@
                             outlined
                             dense
                             label="Вал"
-                            @change="(value) => form.report.val = parseFloat(parseFloat(value).toFixed(2))" />
+                            @change="(value) => form.report.val = toFixedFloat(value)" />
                     </div>
                     <div class="col-4">
                         <q-input
@@ -75,7 +75,7 @@
                             outlined
                             dense
                             label="Бл"
-                            @change="(value) => form.report.bl = parseFloat(parseFloat(value).toFixed(2))" />
+                            @change="(value) => form.report.bl = toFixedFloat(value)" />
                     </div>
                     <div class="col-4">
                         <q-input
@@ -83,15 +83,16 @@
                             outlined
                             dense
                             label="Нал"
-                            @change="(value) => form.report.nal = parseFloat(parseFloat(value).toFixed(2))" />
+                            @change="(value) => form.report.nal = toFixedFloat(value)" />
                     </div>
                 </div>
                 <div class="row justify-end q-gutter-md">
                     <q-btn
+                        dense
                         label="Сбросить"
-                        type="reset"
-                        class="q-ml-sm" />
+                        type="reset" />
                     <q-btn
+                        dense
                         label="Подтвердить"
                         type="submit"
                         color="primary" />
@@ -105,13 +106,13 @@
 import { reactive, computed } from "vue";
 import { useQuasar } from "quasar";
 import api from "@/api";
-import dayjs from "dayjs";
+import { toValidDateString, toLocalDateString } from "@/utils";
 const $q = useQuasar();
 const props = defineProps({
     reportOptions: { type: Array, required: true }
 });
 const emit = defineEmits(["submit"]);
-const today = dayjs().startOf("day").format("DD.MM.YYYY");
+const today = toLocalDateString(Date.now());
 const form = reactive({
     saler_id: null,
     retail_outlet_id: null,
@@ -122,15 +123,8 @@ const form = reactive({
         nal: 0.0
     }
 });
-const locale = {
-    days: "воскресенье_понедельник_вторник_среда_четверг_пятница_суббота".split("_"),
-    daysShort: "вс_пн_вт_ср_чт_пт_сб".split("_"),
-    months: "январь_февраль_март_апрель_май_июнь_июль_август_сентябрь_октябрь_ноябрь_декабрь".split("_"),
-    monthsShort: "янв._февр._мар._апр._мая_июня_июля_авг._сент._окт._нояб._дек.".split("_"),
-    firstDayOfWeek: 1,
-    format24h: true
-};
 
+const toFixedFloat = (value) => parseFloat(parseFloat(value).toFixed(2));
 
 // const validateNal = (rule, value, callback) => {
 //     if ((form.report.val + form.report.bl) != value) {
@@ -166,13 +160,10 @@ const handleResetForm = () => {
     form.report.val = 0;
     form.report.bl = 0;
     form.report.nal = 0;
-    // formElement.value.resetFields();
 };
 const handleSendReport = async () => {
     const copyForm = { ...form, report: { ...form.report } };
-    copyForm.report_date = dayjs(copyForm.report_date, "DD.MM.YYYY", true).toISOString();
-
-
+    copyForm.report_date = toValidDateString(copyForm.report_date);
     try {
         await api.sendReport(copyForm).then(handleResetForm);
         $q.notify({

@@ -2,7 +2,9 @@
     <q-layout view="hHh lpR fFf">
         <HeaderBase v-if="isNotLoginPage" />
         <q-page-container>
-            <q-page v-if="inited">
+            <q-page
+                v-if="inited"
+                class="q-pt-md">
                 <router-view v-slot="{ Component }">
                     <component :is="Component" />
                 </router-view>
