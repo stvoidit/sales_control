@@ -1,7 +1,6 @@
 <template>
-    <q-card class="my-card">
+    <q-card>
         <q-card-section class="q-gutter-md">
-            <!-- <pre>{{ form }}</pre> -->
             <q-form
                 class="q-gutter-md"
                 @submit="handleSendReport"

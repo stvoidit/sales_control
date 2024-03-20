@@ -43,15 +43,25 @@
             </q-card-section>
         </q-card>
     </q-dialog>
-    <div class="row q-col-gutter-md q-pa-md">
-        <div class="col">
+    <div class="row q-col-gutter-md q-px-md justify-between">
+        <div class="row inline wrap justify-between items-start">
             <q-btn
                 label="Добавить связь"
                 @click="dialogFormVisible = true" />
+        </div>
+        <div class="row inline wrap justify-between items-start">
+            <q-toggle
+                v-model="grid"
+                color="primary"
+                :label="grid ? 'Карточки' : 'Таблица'" />
+        </div>
+    </div>
+    <div class="row q-col-gutter-md q-pa-md">
+        <div class="col">
             <q-table
                 class="q-mt-md"
                 :rows="appointments"
-                :grid="true"
+                :grid="grid"
                 hide-pagination
                 bordered
                 :columns="columns"
@@ -64,6 +74,7 @@
 import { ref, reactive, onMounted } from "vue";
 import api from "@/api";
 const dialogFormVisible = ref(false);
+const grid = ref(true);
 const form = reactive({
     id: null,
     user: null,
@@ -108,18 +119,22 @@ const onConfirm = async () => {
 const columns = [
     {
         field: "user.login",
+        align: "left",
         label: "Пользователь"
     },
     {
         field: "saler.label",
+        align: "left",
         label: "Продавец"
     },
     {
         field: "retail_outlet.label",
+        align: "left",
         label: "Торговая точка"
     },
     {
         field: "retail_outlet.address",
+        align: "left",
         label: "Адрес"
     }
 ];
