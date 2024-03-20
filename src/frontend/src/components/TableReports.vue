@@ -5,6 +5,7 @@
             :grid="false"
             hide-pagination
             dense
+            separator="cell"
             :columns="columns"
             row-key="id" />
     </div>

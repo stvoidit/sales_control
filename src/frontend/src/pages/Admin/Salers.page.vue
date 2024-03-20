@@ -26,8 +26,7 @@
                         <q-btn
                             label="Добавить"
                             type="submit"
-                            color="primary"
-                            @click="onConfirm" />
+                            color="primary" />
                     </div>
                 </q-form>
             </q-card-section>
@@ -43,9 +42,37 @@
                 :rows="salers"
                 :grid="false"
                 hide-pagination
-                bordered
+                dense
                 :columns="columns"
-                row-key="id" />
+                row-key="id">
+                <template #header="props">
+                    <q-tr :props="props">
+                        <q-th
+                            v-for="col in props.cols"
+                            :key="col.name"
+                            :props="props">
+                            {{ col.label }}
+                        </q-th>
+                    </q-tr>
+                </template>
+                <template #body="props">
+                    <q-tr :props="props">
+                        <q-td
+                            v-for="col in props.cols"
+                            :key="col.name">
+                            <template v-if="col.name !== 'btns'">
+                                {{ col.value }}
+                            </template>
+                            <q-btn
+                                v-else
+                                dense
+                                color="negative"
+                                label="удалить"
+                                @click="handleDelete(props.row.id)" />
+                        </q-td>
+                    </q-tr>
+                </template>
+            </q-table>
         </div>
     </div>
 </template>
@@ -59,23 +86,35 @@ const fetchData = async () => api.getSalers().then(data => salers.value = data);
 onMounted(fetchData);
 const columns = [
     {
-        field: "id",
+        name: "id",
         label: "ID",
-        width: 120
+        align: "left",
+        field: "id"
     },
     {
-        field: "label",
-        label: "Название"
+        name: "label",
+        align: "left",
+        label: "Название",
+        field: "label"
     },
     {
-        field: "description",
-        label: "Описание или комментарий"
+        name: "description",
+        align: "left",
+        label: "Описание или комментарий",
+        field: "description"
     },
     {
-        field: "created",
+        name: "created",
+        align: "left",
         label: "Дата создания",
-        width: 300,
+        field: "created",
         format: (value) => new Date(value).toLocaleString()
+    },
+    {
+        name: "btns",
+        label: "Действия",
+        align: "left",
+        field: row => row.name
     }
 ];
 const form = reactive({
