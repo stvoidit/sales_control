@@ -6,7 +6,7 @@
                 @submit="handleSendReport"
                 @reset="handleResetForm">
                 <div class="row q-col-gutter-md q-mb-md">
-                    <div class="col-3">
+                    <div :class="$q.screen.lt.md ? 'col-12' : 'col-3'">
                         <q-input
                             v-model="form.report_date"
                             outlined
@@ -32,7 +32,7 @@
                             </template>
                         </q-input>
                     </div>
-                    <div class="col">
+                    <div :class="$q.screen.lt.md ? 'col-12' : 'col'">
                         <q-select
                             v-model="form.saler_id"
                             label="Продавец"
@@ -45,7 +45,7 @@
                             map-options
                             @update:model-value="resetRetailOutletID" />
                     </div>
-                    <div class="col">
+                    <div :class="$q.screen.lt.md ? 'col-12' : 'col'">
                         <q-select
                             v-model="form.retail_outlet_id"
                             label="Торговая точка"

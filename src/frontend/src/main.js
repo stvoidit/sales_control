@@ -18,6 +18,9 @@ app.use(Quasar, {
     config: {
         notify: {
             position: "top-right"
+        },
+        screen: {
+            bodyClasses: true
         }
     }
 });

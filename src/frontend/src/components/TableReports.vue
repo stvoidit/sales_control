@@ -4,6 +4,7 @@
             :rows="data"
             :grid="false"
             hide-pagination
+            :rows-per-page-options="[0]"
             dense
             separator="cell"
             :columns="columns"

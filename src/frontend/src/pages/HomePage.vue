@@ -1,10 +1,10 @@
 <template>
     <div class="row q-mt-md q-gutter-md justify-center">
-        <div class="col-4">
+        <div :class="$q.screen.lt.md ? 'col' : 'col-6'">
             <q-table
                 class="q-mt-md"
                 :rows="prices"
-                :grid="false"
+                :grid="$q.screen.lt.md"
                 hide-pagination
                 dense
                 row-key="id" />
@@ -15,6 +15,8 @@
 <script setup>
 import { onMounted, shallowRef } from "vue";
 import api from "@/api";
+import { useQuasar } from "quasar";
+const $q = useQuasar();
 const prices = shallowRef([]);
 const fetchData = async () => await api.getActualPrices().then(data => prices.value = data);
 onMounted(fetchData);
