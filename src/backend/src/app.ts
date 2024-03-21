@@ -3,8 +3,9 @@ import logger from "./logger.js";
 import pluginDatabase from "./db/index.js";
 // import pluginMultipartForm from "@fastify/multipart";
 import pluginRouter from "./routes/index.js";
+import qs from "qs";
 
-const app = Fastify({ logger });
+const app = Fastify({ logger, querystringParser: qs.parse });
 // app.register(pluginMultipartForm, { attachFieldsToBody: "keyValues" });
 app.register(pluginDatabase);
 app.register(pluginRouter, {

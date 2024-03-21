@@ -259,7 +259,29 @@ class DB {
         }
     }
 
-    async getReportsLog() {
+    async getReportsLog(filters) {
+        const conditionsBuild = () => {
+            if (!Object.keys(filters).length) {
+                return [this.sql``];
+            }
+            const arrFilterFuncs = [];
+            if (filters.dateFrom) {
+                arrFilterFuncs.push(this.sql`r.report_date >= ${filters.dateFrom}`);
+            }
+            if (filters.dateTo) {
+                arrFilterFuncs.push(this.sql`r.report_date <= ${filters.dateTo}`);
+            }
+            const arrConds = [];
+            for (let i = 0; i < arrFilterFuncs.length; i++) {
+                arrConds.push(arrFilterFuncs[i]);
+                if (i !== arrFilterFuncs.length-1) {
+                    arrConds.push(this.sql`\nAND\n`);
+                }
+            }
+            arrConds.unshift(this.sql`\nWHERE\n`);
+            return arrConds;
+        };
+
         return await this.sql`
         SELECT
             r.report_date
@@ -278,6 +300,7 @@ class DB {
             s.id = r.saler_id
         INNER JOIN retail_outlets ro ON
             ro.id = r.retail_outlet_id
+        ${conditionsBuild()}
         ORDER BY
             r.report_date ASC
             , r.retail_outlet_id ASC`;

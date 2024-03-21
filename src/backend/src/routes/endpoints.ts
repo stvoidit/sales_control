@@ -101,7 +101,7 @@ function routes(instance: FastifyInstance, opts: any, done) {
         reply.send(await this.db.getReportOption(request.ctxUser.id));
     });
     instance.get("/api/report/logs", async function (request, reply) {
-        reply.send(await this.db.getReportsLog());
+        reply.send(await this.db.getReportsLog(request.query));
     });
 
     instance.post<{ Body: Report }>("/api/report", async function (request, reply) {

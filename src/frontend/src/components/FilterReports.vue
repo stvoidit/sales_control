@@ -75,6 +75,7 @@
 
 <script setup>
 import { reactive, watch } from "vue";
+import { toValidDateString } from "@/utils";
 const filters = reactive({
     dateFrom: null,
     dateTo: null
@@ -82,6 +83,9 @@ const filters = reactive({
 const emit = defineEmits(["change:filters"]);
 watch(
     filters,
-    (cur) => emit("change:filters",{...filters})
+    (cur) => emit("change:filters", {
+        dateFrom: filters.dateFrom ? toValidDateString(filters.dateFrom) : null,
+        dateTo: filters.dateTo ? toValidDateString(filters.dateTo ) : null
+    })
 );
 </script>
