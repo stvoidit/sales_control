@@ -1,5 +1,5 @@
 <template>
-    <div class="col-auto">
+    <div :class="$q.screen.lt.md ? 'col-6': 'col-auto'">
         <q-input
             v-model="filters.dateFrom"
             class="q-pa-md"
@@ -35,7 +35,7 @@
             </template>
         </q-input>
     </div>
-    <div class="col-auto">
+    <div :class="$q.screen.lt.md ? 'col-6': 'col-auto'">
         <q-input
             v-model="filters.dateTo"
             class="q-pa-md"
@@ -76,6 +76,8 @@
 <script setup>
 import { reactive, watch } from "vue";
 import { toValidDateString } from "@/utils";
+import { useQuasar } from "quasar";
+const $q = useQuasar();
 const filters = reactive({
     dateFrom: null,
     dateTo: null
