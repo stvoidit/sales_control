@@ -266,10 +266,10 @@ class DB {
             }
             const arrFilterFuncs = [];
             if (filters.dateFrom) {
-                arrFilterFuncs.push(this.sql`r.report_date >= ${filters.dateFrom}`);
+                arrFilterFuncs.push(this.sql`r.report_date >= ${filters.dateFrom}::date`);
             }
             if (filters.dateTo) {
-                arrFilterFuncs.push(this.sql`r.report_date <= ${filters.dateTo}`);
+                arrFilterFuncs.push(this.sql`r.report_date <= ${filters.dateTo}::date`);
             }
             const arrConds = [];
             for (let i = 0; i < arrFilterFuncs.length; i++) {

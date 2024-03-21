@@ -17,6 +17,7 @@
                         <q-date
                             v-model="filters.dateFrom"
                             dense
+                            :options="optionDateFrom"
                             title="Дата отчета"
                             mask="DD.MM.YYYY">
                             <div class="row items-center justify-end q-gutter-sm">
@@ -52,6 +53,7 @@
                         <q-date
                             v-model="filters.dateTo"
                             dense
+                            :options="optionDateTo"
                             title="Дата отчета"
                             mask="DD.MM.YYYY">
                             <div class="row items-center justify-end q-gutter-sm">
@@ -73,7 +75,7 @@
 
 <script setup>
 import { reactive, watch } from "vue";
-import { toValidDateString } from "@/utils";
+import { toValidDateString, extractDate } from "@/utils";
 import { useQuasar } from "quasar";
 const $q = useQuasar();
 const filters = reactive({
@@ -88,4 +90,18 @@ watch(
         dateTo: filters.dateTo ? toValidDateString(filters.dateTo ) : null
     })
 );
+
+
+const optionDateFrom = (date) => {
+    if (filters.dateTo) {
+        return extractDate(date, "YYYY/MM/DD") <= extractDate(filters.dateTo, "DD.MM.YYYY");
+    }
+    return true;
+};
+const optionDateTo = (date) => {
+    if (filters.dateTo) {
+        return extractDate(date, "YYYY/MM/DD") >= extractDate(filters.dateFrom, "DD.MM.YYYY");
+    }
+    return true;
+};
 </script>

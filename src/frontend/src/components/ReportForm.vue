@@ -20,7 +20,9 @@
                                         transition-hide="scale">
                                         <q-date
                                             v-model="form.report_date"
+                                            no-unset
                                             dense
+                                            :options="optionsDate"
                                             title="Дата отчета"
                                             mask="DD.MM.YYYY"
                                             minimal />
@@ -108,6 +110,7 @@ const props = defineProps({
     reportOptions: { type: Array, required: true }
 });
 const emit = defineEmits(["submit"]);
+
 const today = toLocalDateString(Date.now());
 const form = reactive({
     saler_id: null,
@@ -121,6 +124,8 @@ const form = reactive({
 });
 
 const toFixedFloat = (value) => parseFloat(parseFloat(value).toFixed(2));
+const _today = Date.now();
+const optionsDate = (date) => (new Date(date)) < _today;
 
 // const validateNal = (rule, value, callback) => {
 //     if ((form.report.val + form.report.bl) != value) {
@@ -175,5 +180,4 @@ const handleSendReport = async () => {
 
 };
 const resetRetailOutletID = () => form.retail_outlet_id = null;
-// const disabledDate = (date) => today.isBefore(dayjs(date).startOf("day"));
 </script>
