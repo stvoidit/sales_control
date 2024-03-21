@@ -42,10 +42,20 @@ interface Report {
     }
 }
 
+interface ActualPrice {
+    id: number;
+    label: string;
+    description: string;
+    articul: string;
+    price: number | null;
+    updated: Date | null;
+}
+
 export {
     type User,
     type Saler,
     type RetailOutlet,
     type Appointment,
-    type Report
+    type Report,
+    type ActualPrice
 };

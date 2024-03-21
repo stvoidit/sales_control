@@ -4,6 +4,7 @@ import Appointments from "@/pages/Admin/Appointments.page.vue";
 import DailyReport from "@/pages/Reports/DailyReport.page.vue";
 import HomePage from "@/pages/HomePage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
+import Prices from "@/pages/Admin/Prices.page.vue";
 import RetailOutlets from "@/pages/Admin/RetailOutlets.page.vue";
 import Salers from "@/pages/Admin/Salers.page.vue";
 import Users from "@/pages/Admin/Users.page.vue";
@@ -69,6 +70,13 @@ const router = createRouter({
                     component: Appointments,
                     meta: {
                         label: "Назначения"
+                    }
+                },
+                {
+                    path: "prices",
+                    component: Prices,
+                    meta: {
+                        label: "Прайс лист"
                     }
                 }
             ]

@@ -1,4 +1,4 @@
-import { Appointment, Report, RetailOutlet, Saler, User } from "./models.js";
+import { ActualPrice, Appointment, Report, RetailOutlet, Saler, User } from "./models.js";
 
 import { Sql } from "postgres";
 import bcrypt from "bcryptjs";
@@ -281,6 +281,65 @@ class DB {
         ORDER BY
             r.report_date ASC
             , r.retail_outlet_id ASC`;
+    }
+
+    async getActualPrices() {
+        return this.sql<ActualPrice[]>`
+        SELECT
+            p.id
+            , p."label"
+            , p.description
+            , p.articul
+            , pr.price::float8
+            , pr.updated
+        FROM
+            products p
+        LEFT JOIN prices pr ON
+            pr.product_id = p.id
+            ORDER BY p.id`;
+    }
+
+    async UpdateActualPrice(product_id: number, price: number) {
+        try {
+            return await this.sql`
+            INSERT INTO
+                public.prices
+                (
+                    product_id
+                    , price
+                    , updated
+                )
+            VALUES(
+                ${product_id}
+                , ${price}
+                , now()
+            )
+            ON
+            CONFLICT (product_id)
+            DO
+            UPDATE
+            SET
+                price = EXCLUDED.price
+                , updated = now()`;
+        } catch (err: any) {
+            throw new Error(err.detail||err.message);
+        }
+    }
+
+    async getHistoryPrices() {
+        return this.sql`
+        SELECT
+            ph.product_id
+            , p."label"
+            , p.articul
+            , ph.price::float8
+            , ph.price_date
+        FROM
+            prices_history ph
+        INNER JOIN products p ON
+            p.id = ph.product_id
+        ORDER BY
+            ph.price_date ASC`;
     }
 }
 

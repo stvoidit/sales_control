@@ -117,6 +117,25 @@ function routes(instance: FastifyInstance, opts: any, done) {
         }
     });
 
+
+    instance.get("/api/prices/actual", async function (request, reply) {
+        reply.send(await this.db.getActualPrices());
+    });
+
+    instance.get("/api/prices/history", async function (request, reply) {
+        reply.send(await this.db.getHistoryPrices());
+    });
+    instance.post<{ Body: { product_id: number, price: number } }>("/api/prices/actual", async function (request, reply) {
+        this.log.debug(request.body);
+        try {
+            await this.db.UpdateActualPrice(request.body.product_id, request.body.price);
+            reply.code(201);
+        } catch (err: any) {
+            this.log.error(err);
+            reply.code(400).send({error:err.message});
+        }
+    });
+
     done();
 }
 

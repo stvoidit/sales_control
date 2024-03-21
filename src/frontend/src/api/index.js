@@ -81,6 +81,22 @@ class API {
     async getReportsLog() {
         return await fetch("/api/report/logs").then(intercaptor);
     }
+
+    async getActualPrices() {
+        return await fetch("/api/prices/actual").then(intercaptor);
+    }
+    async updateActualPrice(payload) {
+        const options = {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(payload)
+        };
+        return await (fetch("/api/prices/actual", options));
+    }
+
+    async getHistoryPrices() {
+        return await fetch("/api/prices/history").then(intercaptor);
+    }
 }
 
 
