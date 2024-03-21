@@ -16,7 +16,6 @@
                         transition-hide="scale">
                         <q-date
                             v-model="filters.dateFrom"
-                            v-close-popup
                             dense
                             title="Дата отчета"
                             mask="DD.MM.YYYY">
@@ -52,7 +51,6 @@
                         transition-hide="scale">
                         <q-date
                             v-model="filters.dateTo"
-                            v-close-popup
                             dense
                             title="Дата отчета"
                             mask="DD.MM.YYYY">

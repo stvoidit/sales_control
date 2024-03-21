@@ -16,13 +16,10 @@
                                     name="event"
                                     class="cursor-pointer">
                                     <q-popup-proxy
-                                        ref="calendarPopup"
-                                        cover
                                         transition-show="scale"
                                         transition-hide="scale">
                                         <q-date
                                             v-model="form.report_date"
-                                            v-close-popup
                                             dense
                                             title="Дата отчета"
                                             mask="DD.MM.YYYY"
