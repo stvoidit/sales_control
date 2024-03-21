@@ -1,3 +1,8 @@
+import qs from "qs";
+
+const qsOptions = { arrayFormat: "repeat", addQueryPrefix: true, skipNulls: true };
+
+
 async function intercaptor(response) {
     if (response.status === 400) {
         const errorJSON = await response.json();
@@ -78,8 +83,9 @@ class API {
         return await (fetch("/api/report", options));
     }
 
-    async getReportsLog() {
-        return await fetch("/api/report/logs").then(intercaptor);
+    async getReportsLog(filters) {
+        const params = qs.stringify(filters, qsOptions);
+        return await fetch(`/api/report/logs${params}`).then(intercaptor);
     }
 
     async getActualPrices() {
