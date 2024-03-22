@@ -25,7 +25,7 @@ export default fastifyPlugin(function (instance: FastifyInstance, opts: any, don
             url: request.url,
             cookies: request.cookies.profile
         }, "middleware");
-        if (request.url.startsWith("/api") && !request.url.startsWith("/api/login")) {
+        if (request.url.startsWith("/api") && (!request.url.startsWith("/api/login") && !request.url.startsWith("/api/logout"))) {
             const { valid, value } = reply.unsignCookie(request.cookies.profile||"");
             if (!valid || !value) {
                 reply.code(401).send("Unauthorized");
@@ -37,7 +37,7 @@ export default fastifyPlugin(function (instance: FastifyInstance, opts: any, don
             }
         }
     });
-    instance.post<{ Body: { login: string, password: string } }>("/api/login", async function (request, reply) {
+    instance.post<{ Body: { login: string, password: string } }>("/api/login", async function(request, reply) {
         try {
             this.log.debug(request.body);
             const user = await this.db.checkUserLogin(request.body);
@@ -46,6 +46,10 @@ export default fastifyPlugin(function (instance: FastifyInstance, opts: any, don
         } catch (err: any) {
             reply.code(400).send({error:err.message});
         }
+    });
+    instance.get("/api/logout", async function (request, reply) {
+        reply.clearCookie("profile");
+        reply.redirect(307, "/login");
     });
     done();
 });

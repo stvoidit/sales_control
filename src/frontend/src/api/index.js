@@ -1,4 +1,5 @@
 import qs from "qs";
+import { reactive } from "vue";
 
 const qsOptions = { arrayFormat: "repeat", addQueryPrefix: true, skipNulls: true };
 
@@ -21,6 +22,20 @@ async function intercaptor(response) {
 
 
 class API {
+    user;
+
+    getUser() {
+        return this.user;
+    }
+
+    async init() {
+        const isNotLoginPage = window.location.pathname !== "/login";
+        const response = await fetch("/api/init");
+        if (response.status === 401 && isNotLoginPage) window.location.href = "/login";
+        this.user = await response.json();
+        return true;
+    }
+
     async getUsers() {
         return await fetch("/api/users").then(intercaptor);
     }
@@ -106,4 +121,4 @@ class API {
 }
 
 
-export default new API();
+export default reactive(new API());
