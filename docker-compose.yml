@@ -15,6 +15,15 @@ services:
       - ${PWD}/scripts/docker-entrypoint-initdb:/docker-entrypoint-initdb.d
     ports:
       - ${PGPORT}:${PGPORT}
+    command: >
+      postgres
+      -c shared_buffers=${shared_buffers:-128MB}
+      -c effective_cache_size=${effective_cache_size:-512MB}
+      -c work_mem=${work_mem:-10MB}
+      -c maintenance_work_mem=${maintenance_work_mem:-64MB}
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+      -c max_parallel_workers=2
 
   sales_control_application:
     container_name: sales_control_application
