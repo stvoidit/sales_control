@@ -1,10 +1,55 @@
 <template>
     <q-header
         bordered
-        class="bg-white text-black"
-        height-hint="98">
+        class="bg-white text-black">
         <q-toolbar>
+            <q-btn
+                v-if="$q.screen.lt.md"
+                flat
+                round
+                icon="menu"
+                class="q-mr-sm">
+                <q-menu>
+                    <q-list style="min-width: 100px">
+                        <template
+                            v-for="r in menuRoutes"
+                            :key="r.path">
+                            <q-item
+                                v-if="r.meta && !r.children"
+                                v-close-popup
+                                :to="r.path"
+                                exact
+                                clickable>
+                                <q-item-section>{{ r.meta.label }}</q-item-section>
+                            </q-item>
+                            <q-item
+                                v-if="r.meta && r.children"
+                                clickable>
+                                <q-item-section>{{ r.meta.label }}</q-item-section>
+                                <q-item-section side>
+                                    <q-icon name="keyboard_arrow_right" />
+                                </q-item-section>
+                                <q-menu
+                                    anchor="top end"
+                                    self="top start">
+                                    <q-list>
+                                        <q-item
+                                            v-for="sr in r.children"
+                                            :key="sr.path"
+                                            :to="sr.path"
+                                            exact
+                                            clickable>
+                                            <q-item-section>{{ sr.meta.label }}</q-item-section>
+                                        </q-item>
+                                    </q-list>
+                                </q-menu>
+                            </q-item>
+                        </template>
+                    </q-list>
+                </q-menu>
+            </q-btn>
             <q-tabs
+                v-else
                 v-model="tab"
                 align="left"
                 inline-label>
@@ -38,10 +83,12 @@
             </q-tabs>
             <q-space />
             <div class="q-pa-md q-gutter-sm">
-                <q-chip square>
+                <q-chip
+                    square
+                    :style="{cursor: 'pointer'}">
                     {{ api.getUser()?.name }}
-                    <q-popup-proxy>
-                        <q-list>
+                    <q-popup-proxy :breakpoint="0">
+                        <q-list class="bg-white text-black">
                             <q-item
                                 v-close-popup
                                 disabled
@@ -69,7 +116,9 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 import api from "@/api";
+const $q = useQuasar();
 const tab = ref("/");
 const router = useRouter();
 const menuRoutes = (() => {
